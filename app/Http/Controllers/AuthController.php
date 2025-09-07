@@ -36,7 +36,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email'  => 'required|max:255',
+            'email'  => 'required|email|max:255',
             'password' => 'required|max:16'
         ]);
 
@@ -44,25 +44,21 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = PersonalAccessToken::where('tokenable_id', $user->id)->first();
 
-            if (!$token) {
-                return response()->json([
-                    'status' => 'Error',
-                    'message' => 'Unathorized Token!'
-                ], 401);
-            }
+            // ✅ Buat token baru untuk user
+            $token = $user->createToken('login-token')->plainTextToken;
 
             return response()->json([
                 'status' => 'Success',
                 'message' => 'Login Success!',
-                // 'token' => $token->token
+                'token' => $token,
+                'user' => $user
             ], 200);
         }
 
         return response()->json([
             'status' => 'Invalid',
-            'message' => 'Email atau passsword tidak valid',
+            'message' => 'Email atau password tidak valid',
         ], 401);
     }
 
