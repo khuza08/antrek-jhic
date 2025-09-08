@@ -45,3 +45,93 @@ html {
 .my-masonry-grid_column > img {
   margin-bottom: 16px; /* vertical gutter */
 }
+
+/* fix autofill pada input putih/light mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important; /* bg-gray-50 */
+  -webkit-text-fill-color: #1f2937 !important; /* text-gray-800 */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* State focus untuk input putih/light mode */
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 
+    0 0 0 30px #f9fafb inset, 
+    0 0 0 2px rgba(59, 130, 246, 1) !important; /* bg-gray-50 + focus ring blue-500 */
+  -webkit-text-fill-color: #1f2937 !important; /* text-gray-800 */
+  transition: background-color 5000s ease-in-out 0s;
+  outline: none;
+}
+
+/* Solusi untuk mengatasi autofill pada input dark mode */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:active,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important; /* dark:bg-slate-700 */
+  -webkit-text-fill-color: #f3f4f6 !important; /* dark:text-white */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* State focus untuk input dark mode */
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 
+    0 0 0 30px #374151 inset, 
+    0 0 0 2px rgba(59, 130, 246, 1) !important; /* dark:bg-slate-700 + focus ring blue-500 */
+  -webkit-text-fill-color: #f3f4f6 !important; /* dark:text-white */
+  transition: background-color 5000s ease-in-out 0s;
+  outline: none;
+}
+
+/* Solusi untuk Firefox */
+input:-moz-autofill,
+input:-moz-autofill:hover,
+input:-moz-autofill:active,
+textarea:-moz-autofill,
+textarea:-moz-autofill:hover,
+textarea:-moz-autofill:active {
+  -moz-box-shadow: 0 0 0 30px #f9fafb inset !important; /* bg-gray-50 */
+  -moz-text-fill-color: #1f2937 !important; /* text-gray-800 */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* State focus untuk Firefox */
+input:-moz-autofill:focus,
+textarea:-moz-autofill:focus {
+  -moz-box-shadow: 
+    0 0 0 30px #f9fafb inset, 
+    0 0 0 2px rgba(59, 130, 246, 1) !important; /* bg-gray-50 + focus ring blue-500 */
+  -moz-text-fill-color: #1f2937 !important; /* text-gray-800 */
+  transition: background-color 5000s ease-in-out 0s;
+  outline: none;
+}
+
+.dark input:-moz-autofill,
+.dark input:-moz-autofill:hover,
+.dark input:-moz-autofill:active,
+.dark textarea:-moz-autofill,
+.dark textarea:-moz-autofill:hover,
+.dark textarea:-moz-autofill:active {
+  -moz-box-shadow: 0 0 0 30px #374151 inset !important; /* dark:bg-slate-700 */
+  -moz-text-fill-color: #f3f4f6 !important; /* dark:text-white */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark input:-moz-autofill:focus,
+.dark textarea:-moz-autofill:focus {
+  -moz-box-shadow: 
+    0 0 0 30px #374151 inset, 
+    0 0 0 2px rgba(59, 130, 246, 1) !important; /* dark:bg-slate-700 + focus ring blue-500 */
+  -moz-text-fill-color: #f3f4f6 !important; /* dark:text-white */
+  transition: background-color 5000s ease-in-out 0s;
+  outline: none;
+}
