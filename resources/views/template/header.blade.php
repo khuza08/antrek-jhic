@@ -36,8 +36,9 @@
             <!-- Hamburger Toggle BTN -->
 
             <a href="index.html" class="lg:hidden">
-                <img class="dark:hidden" src="src/images/logo/logo.svg" alt="Logo" />
-                <img class="hidden dark:block" src="src/images/logo/logo-dark.svg" alt="Logo" />
+                <img class="dark:hidden" src="{{ asset('tailadmin/build/src/images/logo/logo.svg') }}" alt="Logo" />
+                <img class="hidden dark:block" src="{{ asset('tailadmin/build/src/images/logo/logo-dark.svg') }}"
+                    alt="Logo" />
             </a>
 
             <!-- Application nav menu button -->

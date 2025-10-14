@@ -24,6 +24,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('achievements', AchievementController::class);
     Route::apiResource('teachers', TeacherController::class);
     Route::apiResource('majors', MajorController::class);
-    Route::apiResource('categories', CategoryController::class);
     Route::apiResource('roles', RoleController::class);
 });
+Route::apiResource('categories', CategoryController::class);
