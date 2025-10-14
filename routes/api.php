@@ -11,31 +11,19 @@ use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\NewsController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::apiResource('news', NewsController::class);
-Route::apiResource('galleries', GalleryController::class);
-Route::apiResource('/achievements', AchievementController::class);
-Route::apiResource('/teachers', TeacherController::class);
-Route::apiResource('/majors', MajorController::class);
-Route::apiResource('/categories', CategoryController::class);
-Route::apiResource('/roles', RoleController::class);
-// manage login resgiter and logout
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
 Route::middleware('auth:sanctum')->group(function () {
+    // Logout
     Route::delete('/logout', [AuthController::class, 'destroy']);
+
+    // Protected routes
+    Route::apiResource('news', NewsController::class);
+    Route::apiResource('galleries', GalleryController::class);
+    Route::apiResource('achievements', AchievementController::class);
+    Route::apiResource('teachers', TeacherController::class);
+    Route::apiResource('majors', MajorController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('roles', RoleController::class);
 });
