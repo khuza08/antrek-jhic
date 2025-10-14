@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Guru')
+@section('title', 'Data Guru')
 
 @section('content')
     <!-- Small Device Overlay -->
@@ -22,7 +22,7 @@
             <table class="w-full text-left border-collapse">
                 <thead class="border-b border-gray-600">
                     <tr>
-                        <th class="py-2 px-3">#</th>
+                        <th class="py-2 px-3">No</th>
                         <th class="py-2 px-3">Nama</th>
                         <th class="py-2 px-3">Deskripsi</th>
                         <th class="py-2 px-3">Rate</th>

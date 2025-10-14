@@ -40,7 +40,7 @@
                       <ul class="flex flex-col gap-4 mb-6">
                           <!-- Menu Item Dashboard -->
                           <li>
-                              <a href="/dashboard" class="menu-item group"
+                              <a href="/" class="menu-item group"
                                   :class="(selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' ||
                                       page === 'marketing' || page === 'crm' || page === 'stocks') ?
                                   'menu-item-active' : 'menu-item-inactive'">
@@ -115,7 +115,7 @@
                                   <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
                                       class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('majors-table') }}" class="menu-dropdown-item group"
+                                          <a href="{{ route('jurusan-table') }}" class="menu-dropdown-item group"
                                               :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
                                                   'menu-dropdown-item-inactive'">
                                               Data Jurusan

@@ -28,8 +28,7 @@
                     <td class="py-2 px-3">${index + 1}</td>
                     <td class="py-2 px-3">${category.name}</td>
                     <td class="py-2 px-3">${category.slug}</td>
-                    <td class="py-2 px-3">${category.description ?? '-'}</td>
-                    <td class="py-2 px-3">${category.created_at ?? '-'}</td>
+                    <td class="py-2 px-3">${category.description ?? ''}</td>
                     <td class="py-2 px-3">
                         <button class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
                         <button class="bg-red-600 px-3 py-1 rounded hover:bg-red-500">Hapus</button>
@@ -44,4 +43,5 @@
             });
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 <script defer src="{{ asset('tailadmin/build/bundle.js') }}"></script>

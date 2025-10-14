@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'majors')
+@section('title', 'Data Jurusan')
 
 @section('content')
     <!-- Small Device Overlay -->
