@@ -79,9 +79,10 @@ class GalleryController extends Controller
         ]);
 
         return response()->json([
+            "status" => "Ok",
             'message' => 'Gallery updated successfully',
             'data' => $gallery
-        ]);
+        ], 200);
     }
 
     /**
@@ -93,7 +94,8 @@ class GalleryController extends Controller
         $gallery->delete();
 
         return response()->json([
+            'Status' => "Ok",
             'message' => 'Gallery deleted successfully'
-        ]);
+        ], 200);
     }
 }
