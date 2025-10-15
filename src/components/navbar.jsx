@@ -52,7 +52,7 @@ export default function Header() {
           </div>
 
           {/* Centered desktop navigation (without "Hubungi") */}
-          <nav className="hidden md:flex space-x-6 items-center justify-center">
+          <nav className="hidden md:flex space-x-8 items-center justify-center">
             <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-300 transition">
               Beranda
             </Link>
