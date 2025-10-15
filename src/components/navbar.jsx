@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
+import logoImage from '../assets/images/logo_embed.png';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,13 +40,15 @@ export default function Header() {
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="text-xl md:text-2xl font-bold uppercase tracking-wide text-blue-400 dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition"
-          >
-            SMK ANTARTIKA 2 SIDOARJO
-          </Link>
+          
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <img
+            src={logoImage}
+            alt="SMK Antartika 2 Sidoarjo"
+            className="h-10 md:h-11 w-auto object-contain"
+          />
+        </Link>
 
           {/* mobile menu btn */}
           <div className="md:hidden">
