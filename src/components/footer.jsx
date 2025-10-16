@@ -4,8 +4,7 @@ import logoImage from '../assets/images/logo_embed.png';
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-blue-100 bg-white dark:from-slate-900 dark:bg-gray-800 
-    text-white py-8 px-18">
+    <footer className="bg-white dark:bg-gray-900 text-white py-4 px-18">
 
       <div className="bg-gray-900/10 backdrop-blur-lg w-full max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8 rounded-2xl border-4 border-gray-800">
 
@@ -35,11 +34,11 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* === SOSIAL MEDIA DI BAWAH SENDIRI (dalam kolom yang sama) === */}
+          {/* sosmed */}
           <div className="flex justify-start space-x-4 mt-6 pt-4 border-t border-gray-700">
             {/* Instagram */}
             <a
-              href="https://instagram.com/antartika2sda"
+              href="https://www.instagram.com/smkantartika2sda/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -52,7 +51,7 @@ export default function Footer() {
 
             {/* Facebook */}
             <a
-              href="https://facebook.com/antartika2sda"
+              href="https://www.facebook.com/398967373886009?ref=_xav_ig_profile_page_web"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -65,7 +64,7 @@ export default function Footer() {
 
             {/* GitHub */}
             <a
-              href="https://github.com/antartika2sda"
+              href="https://github.com/khuza08/web_antrek2"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -139,7 +138,7 @@ export default function Footer() {
         
       </div>
 
-      <p className="flex items-center justify-center text-white/50"
+      <p className="flex items-center justify-center text-white/50 py-4"
       >alderlake © Copyright 2025. All Rights Reserved.
       </p>
 
