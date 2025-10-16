@@ -41,8 +41,8 @@
 
             <!-- Logo -->
             <a href="index.html" class="lg:hidden">
-                <img class="dark:hidden" src="{{ asset('tailadmin/build/src/images/logo/logo.svg') }}" alt="Logo" />
-                <img class="hidden dark:block" src="{{ asset('tailadmin/build/src/images/logo/logo-dark.svg') }}"
+                <img class="dark:hidden w-36 h-auto" src="{{ asset('storage/image/logo_embed.png') }}" alt="Logo" />
+                <img class="hidden dark:block w-36 h-auto" src="{{ asset('storage/image/logo_embed.png') }}"
                     alt="Logo" />
             </a>
 
