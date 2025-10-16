@@ -1,4 +1,5 @@
-<footer class="p-4 text-center border-t border-gray-200 dark:border-gray-800">
+<footer
+    class="p-4 text-center border-t bg-gray-100 dark:bg-gray-900 transition-colors duration-300 text-gray-900 dark:text-gray-100">
     <p class="text-sm text-gray-500 dark:text-gray-400">
         © {{ date('Y') }} AntrekAdmin. All rights reserved.
     </p>

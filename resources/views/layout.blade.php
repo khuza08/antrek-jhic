@@ -13,9 +13,17 @@
     <link href="{{ asset('tailadmin/build/style.css') }}" rel="stylesheet">
 </head>
 
-<body class="flex h-screen overflow-hidden" x-data="{ page: 'ecommerce', selected: 'Dashboard', loaded: true, darkMode: false, stickyMenu: false, sidebarToggle: false, scrollTop: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
-    :class="{ 'dark bg-gray-900': darkMode === true }">
+<body class="flex h-screen overflow-hidden" x-data="{
+    page: 'ecommerce',
+    selected: 'Dashboard',
+    loaded: true,
+    darkMode: true,
+    stickyMenu: false,
+    sidebarToggle: false,
+    scrollTop: false
+}" x-init="document.documentElement.classList.add('dark');
+localStorage.setItem('darkMode', 'true');"
+    class="dark bg-gray-900 text-white">
 
     <!-- ===== Preloader Start ===== -->
     <div x-show="loaded" x-init="window.addEventListener('DOMContentLoaded', () => { setTimeout(() => loaded = false, 500) })"
@@ -35,7 +43,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         @include('template.header')
 
         {{-- Main Content --}}
-        <main class="p-6">
+        <main
+            class="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300 text-gray-900 dark:text-gray-100">
             @yield('content')
         </main>
 

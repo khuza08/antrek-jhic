@@ -12,7 +12,10 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $galleries = Gallery::with(['user', 'category'])->get();
+        $galleries = Gallery::with([
+            'user:id,username,email',
+            'category:id,name'
+        ])->get();
         return response()->json($galleries);
     }
 

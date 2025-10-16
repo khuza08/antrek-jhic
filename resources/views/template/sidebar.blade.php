@@ -40,12 +40,14 @@
                       <ul class="flex flex-col gap-4 mb-6">
                           <!-- Menu Item Dashboard -->
                           <li>
-                              <a href="/" class="menu-item group"
-                                  :class="(selected === 'Dashboard') ?
+                              <a href="{{ route('dashboard') }}" class="menu-item group"
+                                  :class="('{{ request()->routeIs('dashboard') ? 'true' : 'false' }}'
+                                      === 'true') ?
                                   'menu-item-active' : 'menu-item-inactive'">
 
                                   <!-- Icon Dashboard -->
-                                  <svg :class="(selected === 'Dashboard') ?
+                                  <svg :class="('{{ request()->routeIs('dashboard') ? 'true' : 'false' }}'
+                                      === 'true') ?
                                   'menu-item-icon-active' : 'menu-item-icon-inactive'"
                                       width="24" height="24" viewBox="0 0 24 24" fill="none"
                                       xmlns="http://www.w3.org/2000/svg">
@@ -65,12 +67,17 @@
 
                           <!-- Menu Item Tables -->
                           <li>
-                              <a href="#" @click.prevent="selected = (selected === 'Tables' ? '':'Tables')"
+                              <a href="#" @click.prevent="selected = (selected === 'Tables' ? '' : 'Tables')"
                                   class="menu-item group"
-                                  :class="(selected === 'Tables') || (page === 'basicTables' || page === 'dataTables') ?
-                                  'menu-item-active' : 'menu-item-inactive'">
-                                  <svg :class="(selected === 'Tables') || (page === 'basicTables' || page === 'dataTables') ?
-                                  'menu-item-icon-active' : 'menu-item-icon-inactive'"
+                                  :class="(selected === 'Tables') ||
+                                  {{ request()->routeIs(['guru-table', 'jurusan-table', 'berita-table', 'prestasi-table', 'Galeri-table', 'kategori-table']) ? 'true' : 'false' }}
+                                      ?
+                                      'menu-item-active' : 'menu-item-inactive'">
+
+                                  <svg :class="(selected === 'Tables') ||
+                                  {{ request()->routeIs(['guru-table', 'jurusan-table', 'berita-table', 'prestasi-table', 'Galeri-table', 'kategori-table']) ? 'true' : 'false' }}
+                                      ?
+                                      'menu-item-icon-active' : 'menu-item-icon-inactive'"
                                       width="24" height="24" viewBox="0 0 24 24" fill="none"
                                       xmlns="http://www.w3.org/2000/svg">
                                       <path fill-rule="evenodd" clip-rule="evenodd"
@@ -78,14 +85,13 @@
                                           fill="currentColor" />
                                   </svg>
 
-
-                                  <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                      Manage
-                                  </span>
+                                  <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">Manage</span>
 
                                   <svg class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
-                                      :class="[(selected === 'Tables') ? 'menu-item-arrow-active' :
-                                          'menu-item-arrow-inactive', sidebarToggle ? 'lg:hidden' : ''
+                                      :class="[(selected === 'Tables') ||
+                                          {{ request()->routeIs(['guru-table', 'jurusan-table', 'berita-table', 'prestasi-table', 'Galeri-table', 'kategori-table']) ? 'true' : 'false' }} ?
+                                          'menu-item-arrow-active' : 'menu-item-arrow-inactive', sidebarToggle ?
+                                          'lg:hidden' : ''
                                       ]"
                                       width="20" height="20" viewBox="0 0 20 20" fill="none"
                                       xmlns="http://www.w3.org/2000/svg">
@@ -94,99 +100,67 @@
                                   </svg>
                               </a>
 
-                              <!-- Dropdown Menu Start -->
+                              <!-- Dropdown Menu -->
                               <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Tables') ? 'block' : 'hidden'">
+                                  :class="(selected === 'Tables') ||
+                                  {{ request()->routeIs(['guru-table', 'jurusan-table', 'berita-table', 'prestasi-table', 'Galeri-table', 'kategori-table']) ? 'true' : 'false' }}
+                                      ?
+                                      'block' : 'hidden'">
                                   <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
                                       class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('guru-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
+                                          <a href="{{ route('guru-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('guru-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
                                               Data Guru
                                           </a>
                                       </li>
-                                  </ul>
-                              </div>
-                              <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Tables') ? 'block' : 'hidden'">
-                                  <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                      class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('jurusan-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
+                                          <a href="{{ route('jurusan-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('jurusan-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
                                               Data Jurusan
                                           </a>
                                       </li>
-                                  </ul>
-                              </div>
-                              <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Tables') ? 'block' : 'hidden'">
-                                  <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                      class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('berita-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
+                                          <a href="{{ route('berita-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('berita-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
                                               Berita
                                           </a>
                                       </li>
-                                  </ul>
-                              </div>
-                              <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Tables') ? 'block' : 'hidden'">
-                                  <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                      class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('prestasi-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
+                                          <a href="{{ route('prestasi-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('prestasi-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
                                               Prestasi
                                           </a>
                                       </li>
-                                  </ul>
-                              </div>
-                              <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Tables') ? 'block' : 'hidden'">
-                                  <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                      class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('Galeri-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
-                                              Galery
+                                          <a href="{{ route('Galeri-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('Galeri-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
+                                              Galeri
                                           </a>
                                       </li>
-                                  </ul>
-                              </div>
-                              <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Tables') ? 'block' : 'hidden'">
-                                  <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                      class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('kategori-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
+                                          <a href="{{ route('kategori-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('kategori-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
                                               Kategori
                                           </a>
                                       </li>
                                   </ul>
                               </div>
-                              <!-- Dropdown Menu End -->
                           </li>
                           <!-- Menu Item Tables -->
 
                           <!-- Menu Item Forms -->
                           <li>
-                              <a href="#" @click.prevent="selected = (selected === 'Forms' ? '':'Forms')"
+                              <a href="#" @click.prevent="selected = (selected === 'Forms' ? '' : 'Forms')"
                                   class="menu-item group"
-                                  :class="(selected === 'Forms') || (page === 'formElements' || page === 'formLayout' ||
-                                      page === 'proFormElements' || page === 'proFormLayout') ? 'menu-item-active' :
-                                  'menu-item-inactive'">
-                                  <svg :class="(selected === 'Settings') || (page === 'generalSettings' ||
-                                      page === 'userSettings') ?
-                                  'menu-item-icon-active' : 'menu-item-icon-inactive'"
+                                  :class="(selected === 'Forms') ||
+                                  {{ request()->routeIs(['user-table', 'role-table']) ? 'true' : 'false' }}
+                                      ?
+                                      'menu-item-active' : 'menu-item-inactive'">
+                                  <svg :class="(selected === 'Forms') ||
+                                  {{ request()->routeIs(['user-table', 'role-table']) ? 'true' : 'false' }}
+                                      ?
+                                      'menu-item-icon-active' : 'menu-item-icon-inactive'"
                                       xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                       viewBox="0 0 24 24" fill="none">
                                       <path fill-rule="evenodd" clip-rule="evenodd"
@@ -199,8 +173,10 @@
                                   </span>
 
                                   <svg class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
-                                      :class="[(selected === 'Forms') ? 'menu-item-arrow-active' :
-                                          'menu-item-arrow-inactive', sidebarToggle ? 'lg:hidden' : ''
+                                      :class="[(selected === 'Forms') ||
+                                          {{ request()->routeIs(['user-table', 'role-table']) ? 'true' : 'false' }} ?
+                                          'menu-item-arrow-active' : 'menu-item-arrow-inactive', sidebarToggle ?
+                                          'lg:hidden' : ''
                                       ]"
                                       width="20" height="20" viewBox="0 0 20 20" fill="none"
                                       xmlns="http://www.w3.org/2000/svg">
@@ -211,26 +187,20 @@
 
                               <!-- Dropdown Menu Start -->
                               <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Forms') ? 'block' : 'hidden'">
+                                  :class="(selected === 'Forms') ||
+                                  {{ request()->routeIs(['user-table', 'role-table']) ? 'true' : 'false' }} ? 'block' :
+                                      'hidden'">
                                   <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
                                       class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('user-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'formElements' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
+                                          <a href="{{ route('user-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('user-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
                                               User
                                           </a>
                                       </li>
-                                  </ul>
-                              </div>
-                              <div class="overflow-hidden transform translate"
-                                  :class="(selected === 'Forms') ? 'block' : 'hidden'">
-                                  <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                      class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
                                       <li>
-                                          <a href="{{ route('role-table') }}" class="menu-dropdown-item group"
-                                              :class="page === 'formElements' ? 'menu-dropdown-item-active' :
-                                                  'menu-dropdown-item-inactive'">
+                                          <a href="{{ route('role-table') }}"
+                                              class="menu-dropdown-item group {{ request()->routeIs('role-table') ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive' }}">
                                               Role
                                           </a>
                                       </li>

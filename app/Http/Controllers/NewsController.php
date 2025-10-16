@@ -13,7 +13,10 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::with(['user', 'category'])->get();
+        $news = News::with([
+            'user:id,username,email',
+            'category:id,name'
+        ])->get();
         return response()->json($news);
     }
 

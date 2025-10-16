@@ -32,13 +32,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
-
-    // ✅ Dashboard (contoh setelah login)
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // ✅ Profile Routes - GUNAKAN AUTHCONTROLLER
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
     Route::delete('/profile/picture', [AuthController::class, 'deleteProfilePicture'])->name('profile.picture.delete');

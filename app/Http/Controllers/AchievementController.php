@@ -13,7 +13,10 @@ class AchievementController extends Controller
      */
     public function index()
     {
-        $achievements = Achievement::with(['user', 'category'])->get();
+        $achievements = Achievement::with([
+            'user:id,username,email',
+            'category:id,name'
+        ])->get();
         return response()->json($achievements);
     }
 
