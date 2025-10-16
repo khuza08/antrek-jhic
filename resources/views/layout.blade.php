@@ -6,13 +6,14 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>@yield('title', 'eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Antrek Dashboard')</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="icon" href="{{ asset('tailadmin/build/favicon.ico') }}">
     <link href="{{ asset('tailadmin/build/style.css') }}" rel="stylesheet">
 </head>
 
-<body class="flex h-screen overflow-hidden" x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+<body class="flex h-screen overflow-hidden" x-data="{ page: 'ecommerce', selected: 'Dashboard', loaded: true, darkMode: false, stickyMenu: false, sidebarToggle: false, scrollTop: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
     :class="{ 'dark bg-gray-900': darkMode === true }">
 

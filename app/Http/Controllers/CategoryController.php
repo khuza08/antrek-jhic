@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Gallery;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,12 +13,10 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        // return view('manage.kategori', [
-        //     'categories' => $categories
-        // ]);
+
         return response()->json([
-            'Status' => "Ok",
-            'Message' => "Categories get all data successfully",
+            'status' => "Ok",
+            'message' => "Categories retrieved successfully",
             'categories' => $categories
         ], 200);
     }
@@ -29,18 +26,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|max:100|string',
             'slug' => 'required|string',
             'description' => 'required|string',
         ]);
 
-        $categories = Category::create($validateData);
+        $category = Category::create($validatedData);
 
         return response()->json([
-            "Status" => "Ok",
-            'message' => 'Categories created successfully',
-            'categories' => $categories
+            'status' => "Ok",
+            'message' => 'Category created successfully',
+            'category' => $category
         ], 201);
     }
 
@@ -49,7 +46,20 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json([
+                'status' => "Error",
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => "Ok",
+            'message' => 'Category retrieved successfully',
+            'category' => $category
+        ], 200);
     }
 
     /**
@@ -57,18 +67,27 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validateData = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|max:100|string',
             'slug' => 'required|string',
             'description' => 'required|string',
         ]);
 
-        $categories = Category::where('id', $id)->update($validateData);
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json([
+                'status' => "Error",
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        $category->update($validatedData);
 
         return response()->json([
             'status' => "Ok",
-            'message' => 'Categories updated successfully',
-            'categories' => $categories
+            'message' => 'Category updated successfully',
+            'category' => $category
         ], 200);
     }
 
@@ -77,12 +96,20 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $categoryId = Category::findOrFail($id);
-        $categoryId->delete();
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json([
+                'status' => "Error",
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        $category->delete();
 
         return response()->json([
             'status' => "Ok",
-            'message' => 'Categories deleted successfully',
+            'message' => 'Category deleted successfully'
         ], 200);
     }
 }

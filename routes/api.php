@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MajorController;
@@ -15,15 +14,15 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Logout
     Route::delete('/logout', [AuthController::class, 'destroy']);
-
-    // Protected routes
-    Route::apiResource('news', NewsController::class);
-    Route::apiResource('galleries', GalleryController::class);
-    Route::apiResource('achievements', AchievementController::class);
-    Route::apiResource('teachers', TeacherController::class);
-    Route::apiResource('majors', MajorController::class);
-    Route::apiResource('roles', RoleController::class);
 });
+
+// Resource routes
+Route::apiResource('news', NewsController::class);
+Route::apiResource('galleries', GalleryController::class);
+Route::apiResource('achievements', AchievementController::class);
+Route::apiResource('teachers', TeacherController::class);
+Route::apiResource('majors', MajorController::class);
+Route::apiResource('roles', RoleController::class);
 Route::apiResource('categories', CategoryController::class);
+Route::apiResource('users', AuthController::class);

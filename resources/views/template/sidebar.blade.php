@@ -20,7 +20,7 @@
 
           <div class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
               <!-- Sidebar Menu -->
-              <nav x-data="{ selected: $persist('Dashboard') }">
+              <nav x-data="{ selected: 'Dashboard' }">
                   <!-- Menu Group -->
                   <div>
                       <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
@@ -41,13 +41,11 @@
                           <!-- Menu Item Dashboard -->
                           <li>
                               <a href="/" class="menu-item group"
-                                  :class="(selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' ||
-                                      page === 'marketing' || page === 'crm' || page === 'stocks') ?
+                                  :class="(selected === 'Dashboard') ?
                                   'menu-item-active' : 'menu-item-inactive'">
 
                                   <!-- Icon Dashboard -->
-                                  <svg :class="(selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' ||
-                                      page === 'marketing' || page === 'crm' || page === 'stocks') ?
+                                  <svg :class="(selected === 'Dashboard') ?
                                   'menu-item-icon-active' : 'menu-item-icon-inactive'"
                                       width="24" height="24" viewBox="0 0 24 24" fill="none"
                                       xmlns="http://www.w3.org/2000/svg">

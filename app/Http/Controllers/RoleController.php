@@ -23,10 +23,12 @@ class RoleController extends Controller
     {
         $request->validate([
             'role_name' => 'required|string|unique:roles,role_name|max:100',
+            'description' => 'nullable|string'
         ]);
 
         $role = Role::create([
             'role_name' => $request->role_name,
+            'description' => $request->description,
         ]);
 
         return response()->json([
@@ -53,10 +55,12 @@ class RoleController extends Controller
 
         $request->validate([
             'role_name' => 'required|string|max:100|unique:roles,role_name,' . $id,
+            'description' => 'nullable|string'
         ]);
 
         $role->update([
             'role_name' => $request->role_name,
+            'description' => $request->description,
         ]);
 
         return response()->json([
