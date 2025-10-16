@@ -73,9 +73,6 @@ class AuthController extends Controller
     // 🔹 Tambah user baru (simpan foto sebagai BLOB)
     public function store(Request $request)
     {
-        // Debug sementara
-        // dd($request->all(), $request->file('profile_user'));
-
         $request->validate([
             'role_id' => 'required|exists:roles,id',
             'username' => 'required|max:255',
@@ -209,7 +206,7 @@ class AuthController extends Controller
             'password' => 'required|max:16'
         ]);
 
-        $remember = $request->has('remember'); // ✅ ambil nilai remember checkbox
+        $remember = $request->has('remember');
 
         if (!auth()->attempt($request->only('email', 'password'), $remember)) {
             return back()->with('error', 'Email atau password tidak valid');

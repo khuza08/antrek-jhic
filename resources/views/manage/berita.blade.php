@@ -5,8 +5,6 @@
 @section('content')
     <div x-data="newsApp()" x-init="loadNews()" class="p-4 mx-auto max-w-screen-2xl md:p-6 text-white">
         <h1 class="text-2xl font-semibold mb-4">Manajemen Berita</h1>
-
-        <!-- ✅ ALERT -->
         <template x-if="alert.show">
             <div x-text="alert.message"
                 :class="alert.type === 'success' ?

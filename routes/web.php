@@ -10,28 +10,24 @@ use App\Http\Controllers\ProfileController;
 |--------------------------------------------------------------------------
 */
 
-// ✅ Default: arahkan ke halaman login
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// ✅ Halaman login (GET)
 Route::get('/login', function () {
     return view('login');
 })->name('login')->middleware('guest');
 
-// ✅ Proses login (POST)
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
-// ✅ Logout (POST)
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
 | Protected Routes (Hanya bisa diakses jika sudah login)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -51,30 +47,26 @@ Route::middleware(['auth'])->group(function () {
 
     // Manage Routes
     Route::get('/guru', function () {
-        return view('manage.guru.guru');
+        return view('manage.guru');
     })->name('guru-table');
 
     Route::get('/jurusan', function () {
-        return view('manage.jurusan.jurusan');
+        return view('manage.jurusan');
     })->name('jurusan-table');
 
     Route::get('/berita', function () {
-        return view('manage.berita.berita');
+        return view('manage.berita');
     })->name('berita-table');
 
     Route::get('/prestasi', function () {
-        return view('manage.prestasi.prestasi');
+        return view('manage.prestasi');
     })->name('prestasi-table');
 
     Route::get('/galeri', function () {
-        return view('manage.galeri.galeri');
+        return view('manage.galeri');
     })->name('Galeri-table');
 
     Route::get('/kategori', function () {
-        return view('manage.kategori.kategori');
+        return view('manage.kategori');
     })->name('kategori-table');
-
-    Route::get('/create-kategori', function () {
-        return view('manage.kategori.create');
-    })->name('form-create-kategori');
 });
