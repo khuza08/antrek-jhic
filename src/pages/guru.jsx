@@ -1,4 +1,3 @@
-import CardGuru from '../components/cardGuru'
 import { useEffect, useState } from 'react'
 
 export default function Guru() {

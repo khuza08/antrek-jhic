@@ -4,7 +4,6 @@ import Slogan from '../components/sloganSekolah'
 import ToggleTheme from '../components/toggleTheme';
 import Kepsek from '../components/kepsek';
 import { DivSpacer } from '../components/spacer';
-import CardGuru from '../components/cardGuru';
 import Jurusan from '../components/jurusan';
 import GalleryGrid from '../components/galleryGrid';
 import News from '../components/news';
@@ -21,7 +20,6 @@ export default function Home() {
       <Slogan />
       <DivSpacer />
       <Kepsek />
-      <CardGuru />
       <DivSpacer />
       <ToggleTheme />
 
