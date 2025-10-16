@@ -5,10 +5,9 @@ import logoImage from '../assets/images/logo_embed.png';
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-blue-100 bg-white dark:from-slate-900 dark:bg-gray-800 
-    text-white py-18 px-6">
+    text-white py-18 px-18">
 
-      <div className="bg-gray-900/10 backdrop-blur-lg max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-8 \
-      rounded-2xl border-4 border-gray-800">
+      <div className="bg-gray-900/10 backdrop-blur-lg w-full max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8 rounded-2xl border-4 border-gray-800">
 
         {/* Kolom 1: Logo & Info Sekolah */}
         <div>
@@ -81,17 +80,15 @@ export default function Footer() {
         {/* Kolom 3: Lokasi Sekolah (Google Maps) */}
         <div>
           <h3 className="font-semibold mb-4">Lokasi Sekolah</h3>
-          <div className="rounded-lg overflow-hidden shadow-md">
+          <div className="space-y-4">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.133840626677!2d112.73825427475478!3d-7.355448875356463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e07b5c0715b7%3A0xc9212159e564303f!2sSMK%20Telkom%20Sidoarjo!5e0!3m2!1sid!2sid!4v1734330000000!5m2!1sid!2sid"
-              width="100%"
-              height="200"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.133840626677!2d112.7257401!3d-7.4335229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e6a886bb12af%3A0xfd09f08967a2d26f!2sSMK%20Antartika%202%20Sidoarjo!5e0!3m2!1sen!2sid!4v1734330000000!5m2!1sen!2sid"
               style={{ border: 0 }}
-              allowFullScreen=""
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Lokasi SMK Telkom Sidoarjo"
-              className="border-0"
+              title="Lokasi SMK Antartika 2 Sidoarjo"
+              className="w-full h-64 md:h-80 rounded-lg"
             ></iframe>
           </div>
         </div>
