@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Role Management')
+@section('title', 'Manajemen Role')
 
 @section('content')
     <div x-data="roleManager()" x-init="fetchRoles()" class="p-4 mx-auto max-w-screen-2xl md:p-6 text-white">

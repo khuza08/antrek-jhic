@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Data Berita')
+@section('title', 'Manajemen Berita')
 
 @section('content')
     <div x-data="newsApp()" x-init="loadNews()" class="p-4 mx-auto max-w-screen-2xl md:p-6 text-white">

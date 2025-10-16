@@ -4,7 +4,7 @@
           <!-- SIDEBAR HEADER -->
           <div :class="sidebarToggle ? 'justify-center' : 'justify-between'"
               class="flex items-center gap-2 pt-8 sidebar-header pb-7">
-              <a href="index.html">
+              <a href="{{ route('dashboard') }}">
                   <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
                       <img class="dark:hidden  w-44 h-auto" src="{{ asset('storage/image/logo_embed.png') }}"
                           alt="Logo" />

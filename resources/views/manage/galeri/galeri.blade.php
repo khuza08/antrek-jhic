@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Data Galeri')
+@section('title', 'Manajemen Galeri')
 
 @section('content')
     <div x-data="galleryApp()" x-init="init()" class="p-4 mx-auto max-w-screen-2xl md:p-6">

@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Data Guru')
+@section('title', 'Manajemen Guru')
 
 @section('content')
     <div x-data="teacherManager()" x-init="fetchTeachers();
@@ -158,23 +158,21 @@
                 openModal(mode, teacher = null) {
                     this.modalMode = mode;
                     this.modalOpen = true;
-                    this.form = teacher ?
-                        {
-                            id: teacher.id,
-                            name: teacher.name,
-                            description: teacher.description,
-                            rate: teacher.rate,
-                            role_id: teacher.role_id,
-                            image: null
-                        } :
-                        {
-                            id: null,
-                            name: '',
-                            description: '',
-                            rate: '',
-                            role_id: '',
-                            image: null
-                        };
+                    this.form = teacher ? {
+                        id: teacher.id,
+                        name: teacher.name,
+                        description: teacher.description,
+                        rate: teacher.rate,
+                        role_id: teacher.role_id,
+                        image: null
+                    } : {
+                        id: null,
+                        name: '',
+                        description: '',
+                        rate: '',
+                        role_id: '',
+                        image: null
+                    };
                 },
 
                 closeModal() {

@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Data Kategori')
+@section('title', 'Manajemen Kategori')
 
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">

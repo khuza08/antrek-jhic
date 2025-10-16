@@ -7,7 +7,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Antrek Dashboard')</title>
+    <title>@yield('title', 'Dashboard Admin')</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="icon" href="{{ asset('storage/image/logo.png') }}">
     <link href="{{ asset('tailadmin/build/style.css') }}" rel="stylesheet">

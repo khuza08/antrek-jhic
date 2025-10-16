@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Data Jurusan')
+@section('title', 'Manajemen Jurusan')
 
 @section('content')
     <div x-data="majorHandler()" x-init="loadMajors()" class="p-4 mx-auto max-w-screen-2xl md:p-6 text-white">
