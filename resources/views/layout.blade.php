@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Antrek Dashboard')</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <link rel="icon" href="{{ asset('tailadmin/build/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('storage/image/logo.png') }}">
     <link href="{{ asset('tailadmin/build/style.css') }}" rel="stylesheet">
 </head>
 
