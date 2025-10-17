@@ -1,31 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import logoLight from '../assets/images/logo_embed.png';        // for dark mode (white logo)
-import logoDark from '../assets/images/logo_embed_dark.png';    // for light mode (dark logo)
+import logoLight from '../assets/images/logo_embed.png';        // white text (for dark mode)
+import logoDark from '../assets/images/logo_embed_dark.png';    // black text (for light mode)
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [logoSrc, setLogoSrc] = useState(logoLight); // default to light-mode (dark) logo
 
-  // Update logo when theme changes
-  useEffect(() => {
-    const updateLogo = () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      setLogoSrc(isDark ? logoLight : logoDark);
-    };
+  // Detect OS theme ONCE at mount
+  const [logoSrc, setLogoSrc] = useState(() => {
+    // SSR-safe
+    if (typeof window === 'undefined') return logoLight;
 
-    updateLogo(); // initial check
-
-    // Observe class changes on <html> to detect theme toggle
-    const observer = new MutationObserver(updateLogo);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => observer.disconnect();
-  }, [logoLight, logoDark]);
+    // Use matchMedia to detect OS preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? logoLight : logoDark;
+  });
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -74,7 +64,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Centered desktop navigation (without "Hubungi") */}
+          {/* Centered desktop navigation */}
           <nav className="hidden md:flex space-x-8 items-center justify-center">
             <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-300 transition">
               Beranda
@@ -152,7 +142,7 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* "Hubungi" button - right (desktop only) */}
+          {/* "Hubungi" button - desktop */}
           <div className="absolute right-6 hidden md:block">
             <Link
               to="/contact"
@@ -162,7 +152,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile menu button - right (mobile only) */}
+          {/* Mobile menu button */}
           <div className="absolute right-6 md:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
