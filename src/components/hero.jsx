@@ -1,34 +1,46 @@
 import { useState, useEffect } from 'react';
 
-const TOTAL_IMAGES = 5; // sesuaikan dengan jumlah file smk*.webp
-
-const getRandomIndex = () => Math.floor(Math.random() * TOTAL_IMAGES) + 1;
+const TOTAL_IMAGES = 5; // sesuaikan
 
 export default function Hero() {
-  const [bgIndex, setBgIndex] = useState(getRandomIndex());
+  const [currentImage, setCurrentImage] = useState(1);
+  const [nextImage, setNextImage] = useState(2);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setBgIndex(getRandomIndex());
-    }, 1500); // 1.5 detik
+      const newImage = Math.floor(Math.random() * TOTAL_IMAGES) + 1;
+      setCurrentImage(nextImage);
+      setNextImage(newImage);
+    }, 1500);
 
-    return () => clearInterval(interval); // cleanup
-  }, []);
-
-  const bgImage = `/images/smk${bgIndex}.webp`;
+    return () => clearInterval(interval);
+  }, [nextImage]);
 
   return (
     <section className="relative flex items-center justify-center bg-white dark:bg-gray-800 px-4 py-12 sm:py-16 md:p-8 w-full min-h-screen md:h-screen overflow-hidden">
-      {/* Background Image - Rotates every 1.5s */}
-      <img
-        key={bgIndex} // penting agar img benar-benar re-render saat src berubah
-        src={bgImage}
-        alt="SMK Antartika 2 Sidoarjo"
-        className="absolute inset-0 w-full h-full object-cover object-center filter brightness-20 rounded-b-4xl transition-opacity duration-500"
-        onError={(e) => {
-          e.target.src = '/images/smk1.webp';
-        }}
-      />
+      {/* Background Images with fade */}
+      <div className="absolute inset-0">
+        {/* Gambar aktif (di belakang) */}
+        <img
+          src={`/images/smk${currentImage}.webp`}
+          alt="SMK Antartika 2 Sidoarjo"
+          className="absolute inset-0 w-full h-full object-cover object-center filter brightness-20 rounded-b-4xl"
+          onError={(e) => (e.target.src = '/images/smk1.webp')}
+        />
+        {/* Gambar berikutnya (di depan, fade in) */}
+        <img
+          key={nextImage}
+          src={`/images/smk${nextImage}.webp`}
+          alt="SMK Antartika 2 Sidoarjo"
+          className="absolute inset-0 w-full h-full object-cover object-center filter brightness-20 rounded-b-4xl opacity-0 transition-opacity duration-900"
+          onLoad={(e) => {
+            // Fade in setelah gambar selesai load
+            e.currentTarget.classList.remove('opacity-0');
+            e.currentTarget.classList.add('opacity-100');
+          }}
+          onError={(e) => (e.target.src = '/images/smk1.webp')}
+        />
+      </div>
 
       {/* Main Content */}
       <div className="relative flex flex-col items-center max-w-4xl w-full gap-3 sm:gap-4 md:gap-6 text-center z-10 px-2 sm:px-4">
