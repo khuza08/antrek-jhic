@@ -10,7 +10,6 @@ import Home from "./pages/home";
 import Tentang from "./pages/tentang";
 import Guru from "./pages/guru";
 import Prestasi from "./pages/prestasi";
-import Gallery from "./pages/gallery";
 import Contact from "./pages/contact";
 import News from "./pages/news";
 import Ppdb from "./pages/ppdb";
@@ -28,7 +27,6 @@ export default function App() {
           <Route path="/tentang" element={<Tentang />} />
           <Route path="/guru" element={<Guru />} />
           <Route path="/prestasi" element={<Prestasi />} />
-          <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/news" element={<News />} />
           <Route path="/ppdb" element={<Ppdb />} />
