@@ -7,6 +7,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   // Detect OS theme ONCE at mount
   const [logoSrc, setLogoSrc] = useState(() => {
@@ -25,21 +26,17 @@ export default function Header() {
 
   // Close contact form on Escape key
   const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Escape') {
-      setShowContactForm(false);
+    if (e.key === 'Escape' && showContactForm) {
+      closeContactForm();
     }
-  }, []);
+  }, [showContactForm]);
 
   useEffect(() => {
-    if (showContactForm) {
-      window.addEventListener('keydown', handleKeyDown);
-    } else {
-      window.removeEventListener('keydown', handleKeyDown);
-    }
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [showContactForm, handleKeyDown]);
+  }, [handleKeyDown]);
 
   // Detect scroll for header styling
   useEffect(() => {
@@ -50,7 +47,19 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const closeContactForm = () => setShowContactForm(false);
+  const openContactForm = () => {
+    setIsClosing(false);
+    setShowContactForm(true);
+  };
+
+  const closeContactForm = () => {
+    if (!showContactForm) return;
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowContactForm(false);
+      setIsClosing(false);
+    }, 300); // match Tailwind duration-300
+  };
 
   return (
     <>
@@ -164,13 +173,13 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* "Hubungi" button - desktop */}
+          {/* button - desktop */}
           <div className="absolute right-6 hidden md:block">
             <button
-              onClick={() => setShowContactForm(true)}
+              onClick={openContactForm}
               className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-full hover:bg-blue-700 dark:hover:bg-blue-600 transition"
             >
-              Hubungi
+              Kontak
             </button>
           </div>
 
@@ -219,7 +228,7 @@ export default function Header() {
             <button
               onClick={() => {
                 setMenuOpen(false);
-                setShowContactForm(true);
+                openContactForm();
               }}
               className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition text-center mt-2"
             >
@@ -229,16 +238,20 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Contact Form Overlay */}
+      {/* Contact Form Overlay with fade animation */}
       {showContactForm && (
         <>
           <div
-            className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className={`fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${
+              isClosing ? 'opacity-0' : 'opacity-100'
+            }`}
             onClick={closeContactForm}
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
-              className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-slate-700 w-full max-w-md relative"
+              className={`bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-slate-700 w-full max-w-md relative transition-all duration-300 ease-out ${
+                isClosing ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close (×) button */}
@@ -259,7 +272,7 @@ export default function Header() {
                 className="space-y-6"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  // TODO: handle form submission
+                  // TODO: handle form submission logic
                   closeContactForm();
                 }}
               >
