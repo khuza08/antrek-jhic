@@ -20,16 +20,10 @@ export default function Footer() {
               />
             </div>
 
-            <div className="space-y-4 text-sm">
+            <div className="space-y-4 text-sm p-2">
               <div>
-                <strong>Alamat:</strong><br />
-                Jl. Raya Siwalanpanji No.6, Bedrek, Siwalanpanji, Kec. Buduran, Kabupaten Sidoarjo, Jawa Timur 61252
-              </div>
-              <div>
-                <strong>Telepon:</strong> 031-99711858
-              </div>
-              <div>
-                <strong>Surel:</strong> ntrek-sda.sch.id
+                Terwujudnya siswa dan siswi SMK Antartika Sidoarjo yang memiliki budi pekerti luhur, 
+                wawasan Imtaq dan Iptek, ketrampilan, jiwa berwirausaha dan mampu bersaing di Era Global.
               </div>
             </div>
           </div>
@@ -77,47 +71,14 @@ export default function Footer() {
           </div>
         </div>
 
-        
-
-        {/* Kolom 2: Link & Visitor Counter */}
+        {/* Kolom 2: Quick Links */}
         <div>
-          <h3 className="font-semibold mb-4">Link</h3>
-          <ul className="space-y-2 text-sm mb-6">
-            <li><a href="#" className="hover:text-blue-400">iGracias for TS</a></li>
-            <li><a href="#" className="hover:text-blue-400">Pendafataran Sekolah</a></li>
+          <h3 className="font-semibold mb-4">Quick Links</h3>
+          <ul className="space-y-2 text-sm">
+            <li><a href="#" className="hover:text-blue-400">Visi dan Misi</a></li>
+            <li><a href="#" className="hover:text-blue-400">Tentang Kami</a></li>
+            <li><a href="#" className="hover:text-blue-400">Jurusan</a></li>
           </ul>
-
-          <h3 className="font-semibold mb-4">Jumlah Pengunjung</h3>
-          <div className="bg-black px-4 py-3 rounded-md mb-4">
-            <div className="text-2xl font-mono font-bold">023093</div>
-          </div>
-
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/></svg>
-              <span>Users Today : 33</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 001 1h8a1 1 0 001-1V7a1 1 0 00-1-1H7a1 1 0 00-1 1v1z" clipRule="evenodd"/></svg>
-              <span>Users This Month : 979</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 001 1h8a1 1 0 001-1V7a1 1 0 00-1-1H7a1 1 0 00-1 1v1z" clipRule="evenodd"/></svg>
-              <span>Users This Year : 17107</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM3 16a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" clipRule="evenodd"/></svg>
-              <span>Total Users : 23093</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM3 16a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" clipRule="evenodd"/></svg>
-              <span>Views Today : 168</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM3 16a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" clipRule="evenodd"/></svg>
-              <span>Total views : 56823</span>
-            </div>
-          </div>
         </div>
 
         {/* Kolom 3: Lokasi Sekolah (Google Maps) */}
