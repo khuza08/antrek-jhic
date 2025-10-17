@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
 import logoLight from '../assets/images/logo_embed.png';        // white text (for dark mode)
 import logoDark from '../assets/images/logo_embed_dark.png';    // black text (for light mode)
+import sponsorImage from '../assets/images/sponsor.png';        // sponsor image
 
 export default function Footer() {
   // Detect OS theme once on mount
@@ -51,7 +52,7 @@ export default function Footer() {
 
             {/* Facebook */}
             <a
-              href="https://www.facebook.com/398967373886009?ref=_xav_ig_profile_page_web"
+              href="https://www.facebook.com/398967373886009"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -99,13 +100,22 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="mb-6">
             <h3 className="font-semibold mb-4 text-black dark:text-white">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li><a href="/tentang/visi-misi" className="text-black/80 dark:text-white/80 hover:text-blue-600 dark:hover:text-blue-400 transition">Visi dan Misi</a></li>
               <li><a href="/tentang" className="text-black/80 dark:text-white/80 hover:text-blue-600 dark:hover:text-blue-400 transition">Tentang Kami</a></li>
               <li><a href="/jurusan" className="text-black/80 dark:text-white/80 hover:text-blue-600 dark:hover:text-blue-400 transition">Jurusan</a></li>
             </ul>
+          </div>
+
+          {/* Sponsor Image */}
+          <div>
+            <img
+              src={sponsorImage}
+              alt="Sponsor"
+              className="w-full h-auto object-contain"
+            />
           </div>
         </div>
 
