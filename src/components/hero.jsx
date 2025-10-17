@@ -1,21 +1,32 @@
-const getRandomHeroImage = () => {
-  const totalImages = 5; // adjust based on how many smk*.webp files you have
-  const randomIndex = Math.floor(Math.random() * totalImages) + 1;
-  return `/images/smk${randomIndex}.webp`;
-};
+import { useState, useEffect } from 'react';
+
+const TOTAL_IMAGES = 5; // sesuaikan dengan jumlah file smk*.webp
+
+const getRandomIndex = () => Math.floor(Math.random() * TOTAL_IMAGES) + 1;
 
 export default function Hero() {
-  const bgImage = getRandomHeroImage();
+  const [bgIndex, setBgIndex] = useState(getRandomIndex());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgIndex(getRandomIndex());
+    }, 1500); // 1.5 detik
+
+    return () => clearInterval(interval); // cleanup
+  }, []);
+
+  const bgImage = `/images/smk${bgIndex}.webp`;
 
   return (
     <section className="relative flex items-center justify-center bg-white dark:bg-gray-800 px-4 py-12 sm:py-16 md:p-8 w-full min-h-screen md:h-screen overflow-hidden">
-      {/* Background Image - Random .webp from public/images */}
+      {/* Background Image - Rotates every 1.5s */}
       <img
+        key={bgIndex} // penting agar img benar-benar re-render saat src berubah
         src={bgImage}
         alt="SMK Antartika 2 Sidoarjo"
-        className="absolute inset-0 w-full h-full object-cover object-center filter brightness-20 rounded-b-4xl"
+        className="absolute inset-0 w-full h-full object-cover object-center filter brightness-20 rounded-b-4xl transition-opacity duration-500"
         onError={(e) => {
-          e.target.src = '/images/smk1.webp'; // fallback
+          e.target.src = '/images/smk1.webp';
         }}
       />
 
