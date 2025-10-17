@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
 import logoImage from '../assets/images/logo_embed.png';
 
 
@@ -71,14 +72,37 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Kolom 2: Quick Links */}
+        {/* Kolom 2: Address & Quick Links */}
         <div>
-          <h3 className="font-semibold mb-4">Quick Links</h3>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-blue-400">Visi dan Misi</a></li>
-            <li><a href="#" className="hover:text-blue-400">Tentang Kami</a></li>
-            <li><a href="#" className="hover:text-blue-400">Jurusan</a></li>
-          </ul>
+          {/* Address */}
+          <div className="mb-6">
+            <h3 className="font-semibold mb-4">Address</h3>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start">
+                <FaMapMarkerAlt className="mt-0.5 mr-2 flex-shrink-0 opacity-50" />
+                <span>Jl. Raya Siwalanpanji No.6, Bedrek, Siwalanpanji, 
+                Kec. Buduran, Kabupaten Sidoarjo, Jawa Timur 61252</span>
+              </li>
+              <li className="flex items-center">
+                <FaPhone className="mr-2 flex-shrink-0 opacity-50" />
+                <span>(031) 8065117</span>
+              </li>
+              <li className="flex items-center">
+                <FaEnvelope className="mr-2 flex-shrink-0 opacity-50" />
+                <span>info@smkantartika2sda.sch.id</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#" className="hover:text-blue-400">Visi dan Misi</a></li>
+              <li><a href="#" className="hover:text-blue-400">Tentang Kami</a></li>
+              <li><a href="#" className="hover:text-blue-400">Jurusan</a></li>
+            </ul>
+          </div>
         </div>
 
         {/* Kolom 3: Lokasi Sekolah (Google Maps) */}
