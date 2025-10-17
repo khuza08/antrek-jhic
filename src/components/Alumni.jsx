@@ -1,4 +1,5 @@
 import SectionTitle from './sectionTitle';
+import Marquee from 'react-fast-marquee';
 
 export default function Alumni() {
   const testimonials = [
@@ -46,12 +47,46 @@ export default function Alumni() {
     },
   ];
 
+  // Duplicate to ensure seamless infinite loop
+  const duplicated = [...testimonials, ...testimonials];
+
+  // Split into two halves for two rows
+  const mid = duplicated.length / 2;
+  const firstRow = duplicated.slice(0, mid);
+  const secondRow = duplicated.slice(mid);
+
+  const Card = ({ alumni }) => (
+    <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-slate-700 flex flex-col h-full mx-4 w-80 flex-shrink-0">
+      <div className="flex items-center mb-4">
+        <img
+          src={alumni.img.trim()}
+          alt={alumni.name}
+          className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-blue-500 dark:border-blue-400"
+        />
+        <div>
+          <h3 className="text-blue-600 dark:text-blue-400 font-semibold text-lg">{alumni.name}</h3>
+          <p className="text-sm text-gray-600 dark:text-slate-300">{alumni.role}</p>
+        </div>
+      </div>
+      <div className="flex-grow">
+        <p className="text-gray-700 dark:text-slate-300 line-clamp-5">
+          "{alumni.message}"
+        </p>
+      </div>
+      <div className="mt-4 flex justify-end">
+        <svg className="w-8 h-8 text-blue-500 dark:text-blue-400 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+        </svg>
+      </div>
+    </div>
+  );
+
   return (
-    <section className="w-full min-h-screen bg-blue-100 dark:bg-slate-900 py-16">
+    <section className="w-full min-h-screen bg-blue-100 dark:bg-slate-900 py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 w-full">
-        <div className='text-center py-4 mb-12'>
+        <div className="text-center py-4 mb-12">
           <SectionTitle>
-            Apa Kata <span className='italic text-blue-600 dark:text-blue-400' style={{ fontFamily: "'Instrument Serif', serif" }}>
+            Apa Kata <span className="italic text-blue-600 dark:text-blue-400" style={{ fontFamily: "'Instrument Serif', serif" }}>
               Alumni?
             </span>
           </SectionTitle>
@@ -60,36 +95,19 @@ export default function Alumni() {
           </p>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
-          {testimonials.map((alumni, i) => (
-            <div
-              key={i}
-              className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-slate-700 flex flex-col h-full"
-            >
-              <div className="flex items-center mb-4">
-                <img
-                  src={alumni.img}
-                  alt={alumni.name}
-                  className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-blue-500 dark:border-blue-400"
-                />
-                <div>
-                  <h3 className="text-blue-600 dark:text-blue-400 font-semibold text-lg">{alumni.name}</h3>
-                  <p className="text-sm text-gray-600 dark:text-slate-300">{alumni.role}</p>
-                </div>
-              </div>
-              <div className="flex-grow">
-                <p className="text-gray-700 dark:text-slate-300 line-clamp-5">
-                  "{alumni.message}"
-                </p>
-              </div>
-              <div className="mt-4 flex justify-end">
-                <svg className="w-8 h-8 text-blue-500 dark:text-blue-400 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-              </div>
-            </div>
+        {/* First row: left to right */}
+        <Marquee speed={30} pauseOnHover gradient={false} className="mb-6">
+          {firstRow.map((alumni, i) => (
+            <Card key={`row1-${i}`} alumni={alumni} />
           ))}
-        </div>
+        </Marquee>
+
+        {/* Second row: right to left */}
+        <Marquee speed={30} pauseOnHover gradient={false} direction="right">
+          {secondRow.map((alumni, i) => (
+            <Card key={`row2-${i}`} alumni={alumni} />
+          ))}
+        </Marquee>
 
         <div className="text-center mt-16">
           <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition duration-200 shadow-lg hover:shadow-blue-500/20">
