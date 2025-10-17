@@ -4,7 +4,6 @@ import Slogan from '../components/sloganSekolah'
 import Kepsek from '../components/kepsek';
 import { DivSpacer } from '../components/spacer';
 import Jurusan from '../components/jurusan';
-import GalleryGrid from '../components/galleryGrid';
 import News from '../components/news';
 import Alumni from '../components/Alumni';
 import Sekitar from '../components/sekitar';
@@ -26,7 +25,6 @@ export default function Home() {
             <DivSpacer />
 
       <Jurusan />
-      <GalleryGrid />
       <News />
       <DivSpacer />
       <Alumni />
