@@ -16,9 +16,9 @@ export default function Home() {
     <div>
       <Hero />
 
-      <Slogan />
-      <DivSpacer />
       <Kepsek />
+      <DivSpacer />
+      <Slogan />
       <DivSpacer /> 
 
       <DivSpacer />
