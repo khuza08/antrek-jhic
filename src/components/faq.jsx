@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function Faq() {
   const faqs = [
     { 
@@ -37,7 +39,7 @@ export default function Faq() {
                     {faq.q}
                   </span>
                   <svg 
-                    className="w-5 h-5 text-gray-500 dark:text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-transform duration-200 group-open:rotate-180" 
+                    className="w-5 h-5 text-gray-500 dark:text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-transform duration-200"
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
@@ -53,6 +55,12 @@ export default function Faq() {
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        details[open] > summary > svg {
+          transform: rotate(180deg);
+        }
+      `}</style>
     </section>
   )
 }
