@@ -127,11 +127,7 @@ const Jurusan = () => {
           </div>
         </div>
 
-        <div className="text-center mt-12">
-          <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition duration-200 shadow-lg hover:shadow-blue-500/20">
-            Lihat Detail Program
-          </button>
-        </div>
+
       </div>
     </section>
   );

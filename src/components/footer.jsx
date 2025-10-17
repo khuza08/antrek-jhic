@@ -124,7 +124,7 @@ export default function Footer() {
       </div>
 
       <p className="flex items-center justify-center text-white/50 py-4">
-      alderlake © Copyright 2025. All Rights Reserved.
+        alderlake © Copyright 2025. All Rights Reserved.
       </p>
 
       <script async id="vectorshift-chat-widget" src="https://app.vectorshift.ai/chatWidget.js" 
