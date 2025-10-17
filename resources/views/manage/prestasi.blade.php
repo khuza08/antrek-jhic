@@ -26,7 +26,7 @@
                     <table class="w-full text-left border-collapse">
                         <thead class="border-b border-gray-600">
                             <tr>
-                                <th class="py-2 px-3">#</th>
+                                <th class="py-2 px-3">No</th>
                                 <th class="py-2 px-3">Nama</th>
                                 <th class="py-2 px-3">Judul</th>
                                 <th class="py-2 px-3">Rank</th>

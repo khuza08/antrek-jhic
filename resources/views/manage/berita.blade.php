@@ -29,6 +29,7 @@
                             <tr>
                                 <th class="py-2 px-3">No</th>
                                 <th class="py-2 px-3">Judul</th>
+                                <th class="py-2 px-3">Slug</th>
                                 <th class="py-2 px-3">Kategori</th>
                                 <th class="py-2 px-3">Excerpt</th>
                                 <th class="py-2 px-3">Content</th>
@@ -46,6 +47,7 @@
                                 <tr class="border-b border-gray-700 hover:bg-gray-700">
                                     <td class="py-2 px-3" x-text="index + 1"></td>
                                     <td class="py-2 px-3" x-text="item.title"></td>
+                                    <td class="py-2 px-3" x-text="item.slug"></td>
                                     <td class="py-2 px-3" x-text="item.category?.name ?? '-'"></td>
                                     <td class="py-2 px-3" x-text="item.excerpt"></td>
                                     <td class="py-2 px-3" x-text="item.content"></td>
@@ -76,8 +78,14 @@
                 <form @submit.prevent="saveNews">
                     <div class="mb-3">
                         <label class="block mb-1">Judul</label>
-                        <input type="text" x-model="form.title"
+                        <input type="text" x-model="form.title" @input="generateSlug"
                             class="w-full px-3 py-2 rounded bg-gray-800 border border-gray-700 text-white">
+                    </div>
+                    <!-- Input Slug (readonly) -->
+                    <div class="mb-3">
+                        <label class="block mb-1">Slug</label>
+                        <input type="text" x-model="form.slug" readonly
+                            class="w-full px-3 py-2 rounded bg-gray-800 border border-gray-700 text-white cursor-not-allowed">
                     </div>
                     <div class="mb-3">
                         <label class="block mb-1">Kategori</label>
@@ -95,7 +103,10 @@
                     </div>
                     <div class="mb-3">
                         <label class="block mb-1">Content</label>
-                        <textarea x-model="form.content" class="w-full px-3 py-2 rounded bg-gray-800 border border-gray-700 text-white"></textarea>
+                        <input id="trix-content" type="hidden" name="content" x-model="form.content">
+                        <trix-editor input="trix-content"
+                            class="w-full px-3 py-2 rounded bg-gray-800 border border-gray-700 text-white min-h-[200px]">
+                        </trix-editor>
                     </div>
                     <div class="mb-3">
                         <label class="block mb-1">Gambar</label>
@@ -122,6 +133,20 @@
                     show: false,
                     message: '',
                     type: 'success' // success | error
+                },
+                // Di dalam return { ... }
+                generateSlug() {
+                    if (!this.form.title) {
+                        this.form.slug = '';
+                        return;
+                    }
+                    const slug = this.form.title
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s-]/g, '')
+                        .trim()
+                        .replace(/\s+/g, '-')
+                        .replace(/-+/g, '-');
+                    this.form.slug = slug;
                 },
                 form: {
                     id: null,

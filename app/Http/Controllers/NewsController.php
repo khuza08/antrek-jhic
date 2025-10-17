@@ -34,14 +34,14 @@ class NewsController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $slug = Str::slug($request->title, '-');
+        // $slug = Str::slug($request->title, '-');
         $imagePath = $request->file('image')->store('news', 'public');
 
         $news = News::create([
             'user_id' => $request->user_id,
             'category_id' => $request->category_id,
             'title' => $request->title,
-            'slug' => $slug,
+            // 'slug' => $slug,
             'excerpt' => $request->excerpt,
             'content' => $request->content,
             'image' => $imagePath
@@ -78,10 +78,10 @@ class NewsController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $slug = $news->slug;
-        if ($request->has('title')) {
-            $slug = Str::slug($request->title, '-');
-        }
+        // $slug = $news->slug;
+        // if ($request->has('title')) {
+        //     $slug = Str::slug($request->title, '-');
+        // }
 
         $imagePath = $news->image;
         if ($request->hasFile('image')) {
@@ -92,7 +92,7 @@ class NewsController extends Controller
             'user_id' => $request->user_id ?? $news->user_id,
             'category_id' => $request->category_id ?? $news->category_id,
             'title' => $request->title ?? $news->title,
-            'slug' => $slug,
+            // 'slug' => $slug,
             'excerpt' => $request->excerpt ?? $news->excerpt,
             'content' => $request->content ?? $news->content,
             'image' => $imagePath
