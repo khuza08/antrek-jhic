@@ -21,104 +21,101 @@
             </template>
 
             <!-- Table -->
-            <table class="w-full text-left border-collapse">
-                <thead class="border-b border-gray-600">
-                    <tr>
-                        <th class="py-2 px-3">No</th>
-                        <th class="py-2 px-3">Foto</th>
-                        <th class="py-2 px-3">Username</th>
-                        <th class="py-2 px-3">Email</th>
-                        <th class="py-2 px-3">Role</th>
-                        <th class="py-2 px-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template x-for="(user, index) in users" :key="user.id">
-                        <tr class="border-b border-gray-700 hover:bg-gray-700">
-                            <td class="py-2 px-3" x-text="index + 1"></td>
-                            <td class="py-2 px-3">
-                                <img
-                                    :src="user.profile_user ||
-                                        'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.username)" 
-                                    alt="Foto Profil" 
-                                    class="w-10 h-10 rounded-full object-cover">
-                            </td>
-                            <td class="py-2 px-3" x-text="user.username"></td>
-                            <td class="py-2 px-3" x-text="user.email"></td>
-                            <td class="py-2 px-3" x-text="getRoleName(user)"></td>
-                            
-                            <td class="py-2 px-3 space-x-2">
-                                <button @click="editUser(user)"
-                                    class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
-                                <button @click="deleteUser(user.id)"
-                                    class="bg-red-600 px-3 py-1 rounded hover:bg-red-500">Hapus</button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
+            <div class="overflow-x-auto rounded-lg">
+                <div class="w-full text-left border-collapse min-w-[600px]">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="border-b border-gray-600">
+                            <tr>
+                                <th class="py-2 px-3">No</th>
+                                <th class="py-2 px-3">Foto</th>
+                                <th class="py-2 px-3">Username</th>
+                                <th class="py-2 px-3">Email</th>
+                                <th class="py-2 px-3">Role</th>
+                                <th class="py-2 px-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(user, index) in users" :key="user.id">
+                                <tr class="border-b border-gray-700 hover:bg-gray-700">
+                                    <td class="py-2 px-3" x-text="index + 1"></td>
+                                    <td class="py-2 px-3">
+                                        <img :src="user.profile_user ||
+                                            'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.username)"
+                                            alt="Foto Profil" class="w-10 h-10 rounded-full object-cover">
+                                    </td>
+                                    <td class="py-2 px-3" x-text="user.username"></td>
+                                    <td class="py-2 px-3" x-text="user.email"></td>
+                                    <td class="py-2 px-3" x-text="getRoleName(user)"></td>
+
+                                    <td class="py-2 px-3 space-x-2">
+                                        <button @click="editUser(user)"
+                                            class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
+                                        <button @click="deleteUser(user.id)"
+                                            class="bg-red-600 px-3 py-1 rounded hover:bg-red-500">Hapus</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Modal -->
         <div x-show="showModal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50" x-transition>
             <div class="bg-gray-900 p-6 rounded-lg w-full max-w-lg text-white">
-                <h2 class="text-xl font-semibold mb-4" x-text="form.id ? 'Edit User ' : '
-                                    Tambah User '">
-                                </h2>
+                <h2 class="text-xl font-semibold mb-4" x-text="form.id ? `Edit User` : `Tambah User`"></h2>
 
-                                <form @submit.prevent="saveUser" enctype="multipart/form-data">
-                                    <div class="mb-3">
-                                        <label class="block mb-1">Username</label>
-                                        <input type="text" x-model="form.username" required
-                                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
-                                    </div>
+                <form @submit.prevent="saveUser" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="block mb-1">Username</label>
+                        <input type="text" x-model="form.username" required
+                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
+                    </div>
 
-                                    <div class="mb-3">
-                                        <label class="block mb-1">Email</label>
-                                        <input type="email" x-model="form.email" required
-                                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
-                                    </div>
+                    <div class="mb-3">
+                        <label class="block mb-1">Email</label>
+                        <input type="email" x-model="form.email" required
+                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
+                    </div>
 
-                                    <div class="mb-3">
-                                        <label class="block mb-1">Password <span class="text-gray-400 text-sm"
-                                                x-show="form.id">(Kosongkan
-                                                jika tidak ingin mengubah)</span></label>
-                                        <input type="password" x-model="form.password" placeholder="••••••"
-                                            :required="!form.id"
-                                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
-                                    </div>
+                    <div class="mb-3">
+                        <label class="block mb-1">Password <span class="text-gray-400 text-sm" x-show="form.id">(Kosongkan
+                                jika tidak ingin mengubah)</span></label>
+                        <input type="password" x-model="form.password" placeholder="••••••" :required="!form.id"
+                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
+                    </div>
 
-                                    <div class="mb-3">
-                                        <label class="block mb-1">Role</label>
-                                        <select x-model="form.role_id" required
-                                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
-                                            <option value="">Pilih Role</option>
-                                            <template x-for="role in roles" :key="role.id">
-                                                <option :value="role.id" x-text="role.role_name"></option>
-                                            </template>
-                                        </select>
-                                    </div>
+                    <div class="mb-3">
+                        <label class="block mb-1">Role</label>
+                        <select x-model="form.role_id" required
+                            class="w-full rounded p-2 bg-gray-800 border border-gray-700 text-white">
+                            <option value="">Pilih Role</option>
+                            <template x-for="role in roles" :key="role.id">
+                                <option :value="role.id" x-text="role.role_name"></option>
+                            </template>
+                        </select>
+                    </div>
 
-                                    <!-- Foto Profil -->
-                                    <div class="mb-4">
-                                        <label class="block mb-1">Foto Profil</label>
-                                        <input type="file" @change="previewImage" accept="image/*"
-                                            class="w-full text-sm text-gray-400 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500" />
-                                        <template x-if="preview">
-                                            <img :src="preview"
-                                                class="mt-3 w-24 h-24 rounded-full object-cover border border-gray-700">
-                                        </template>
-                                    </div>
+                    <!-- Foto Profil -->
+                    <div class="mb-4">
+                        <label class="block mb-1">Foto Profil</label>
+                        <input type="file" @change="previewImage" accept="image/*"
+                            class="w-full text-sm text-gray-400 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500" />
+                        <template x-if="preview">
+                            <img :src="preview"
+                                class="mt-3 w-24 h-24 rounded-full object-cover border border-gray-700">
+                        </template>
+                    </div>
 
-                                    <div class="flex justify-end gap-2 mt-4">
-                                        <button type="button" @click="closeModal"
-                                            class="bg-gray-600 px-3 py-1 rounded hover:bg-gray-500">Batal</button>
-                                        <button type="submit"
-                                            class="bg-green-600 px-3 py-1 rounded hover:bg-green-500">Simpan</button>
-                                    </div>
-                                </form>
+                    <div class="flex justify-end gap-2 mt-4">
+                        <button type="button" @click="closeModal"
+                            class="bg-gray-600 px-3 py-1 rounded hover:bg-gray-500">Batal</button>
+                        <button type="submit" class="bg-green-600 px-3 py-1 rounded hover:bg-green-500">Simpan</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
     </div>
 
     <script>

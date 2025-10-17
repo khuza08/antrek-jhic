@@ -21,42 +21,46 @@
             </template>
 
             <!-- Table -->
-            <table class="w-full text-left border-collapse">
-                <thead class="border-b border-gray-600">
-                    <tr>
-                        <th class="py-2 px-3">#</th>
-                        <th class="py-2 px-3">Nama</th>
-                        <th class="py-2 px-3">Judul</th>
-                        <th class="py-2 px-3">Rank</th>
-                        <th class="py-2 px-3">Gambar</th>
-                        <th class="py-2 px-3">Kategori</th>
-                        <th class="py-2 px-3">Tanggal</th>
-                        <th class="py-2 px-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template x-for="(ach, index) in achievements" :key="ach.id">
-                        <tr class="border-b border-gray-700 hover:bg-gray-700">
-                            <td class="py-2 px-3" x-text="index + 1"></td>
-                            <td class="py-2 px-3" x-text="ach.user?.name || 'User 1'"></td>
-                            <td class="py-2 px-3" x-text="ach.title"></td>
-                            <td class="py-2 px-3" x-text="ach.rank"></td>
-                            <td class="py-2 px-3">
-                                <img :src="`/storage/${ach.image}`" alt="img" class="w-16 h-16 object-cover rounded"
-                                    x-show="ach.image">
-                            </td>
-                            <td class="py-2 px-3" x-text="ach.category?.name || '-'"></td>
-                            <td class="py-2 px-3" x-text="ach.date"></td>
-                            <td class="py-2 px-3 space-x-2">
-                                <button @click="editAchievement(ach)"
-                                    class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
-                                <button @click="deleteAchievement(ach.id)"
-                                    class="bg-red-600 px-3 py-1 rounded hover:bg-red-500">Hapus</button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
+            <div class="overflow-x-auto rounded-lg">
+                <div class="w-full text-left border-collapse min-w-[600px]">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="border-b border-gray-600">
+                            <tr>
+                                <th class="py-2 px-3">#</th>
+                                <th class="py-2 px-3">Nama</th>
+                                <th class="py-2 px-3">Judul</th>
+                                <th class="py-2 px-3">Rank</th>
+                                <th class="py-2 px-3">Gambar</th>
+                                <th class="py-2 px-3">Kategori</th>
+                                <th class="py-2 px-3">Tanggal</th>
+                                <th class="py-2 px-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(ach, index) in achievements" :key="ach.id">
+                                <tr class="border-b border-gray-700 hover:bg-gray-700">
+                                    <td class="py-2 px-3" x-text="index + 1"></td>
+                                    <td class="py-2 px-3" x-text="ach.user?.name || 'User 1'"></td>
+                                    <td class="py-2 px-3" x-text="ach.title"></td>
+                                    <td class="py-2 px-3" x-text="ach.rank"></td>
+                                    <td class="py-2 px-3">
+                                        <img :src="`/storage/${ach.image}`" alt="img"
+                                            class="w-16 h-16 object-cover rounded" x-show="ach.image">
+                                    </td>
+                                    <td class="py-2 px-3" x-text="ach.category?.name || '-'"></td>
+                                    <td class="py-2 px-3" x-text="ach.date"></td>
+                                    <td class="py-2 px-3 space-x-2">
+                                        <button @click="editAchievement(ach)"
+                                            class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
+                                        <button @click="deleteAchievement(ach.id)"
+                                            class="bg-red-600 px-3 py-1 rounded hover:bg-red-500">Hapus</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Modal -->

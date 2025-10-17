@@ -15,55 +15,66 @@
                     Guru</button>
             </div>
 
-            <table class="w-full text-left border-collapse">
-                <thead class="border-b border-gray-600">
-                    <tr>
-                        <th class="py-2 px-3">No</th>
-                        <th class="py-2 px-3">Nama</th>
-                        <th class="py-2 px-3">Deskripsi</th>
-                        <th class="py-2 px-3">Rate</th>
-                        <th class="py-2 px-3">Foto</th>
-                        <th class="py-2 px-3">Role</th>
-                        <th class="py-2 px-3">Dibuat</th>
-                        <th class="py-2 px-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template x-if="teachers.length === 0">
-                        <tr>
-                            <td colspan="8" class="text-center py-4">Belum ada data</td>
-                        </tr>
-                    </template>
+            <div class="overflow-x-auto rounded-lg">
+                <div class="w-full text-left border-collapse min-w-[600px]">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="border-b border-gray-600">
+                            <tr>
+                                <th class="py-2 px-3">No</th>
+                                <th class="py-2 px-3">Nama</th>
+                                <th class="py-2 px-3">Deskripsi</th>
+                                <th class="py-2 px-3">Rate</th>
+                                <th class="py-2 px-3">Foto</th>
+                                <th class="py-2 px-3">Role</th>
+                                <th class="py-2 px-3">Dibuat</th>
+                                <th class="py-2 px-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-if="teachers.length === 0">
+                                <tr>
+                                    <td colspan="8" class="text-center py-4">Belum ada data</td>
+                                </tr>
+                            </template>
 
-                    <template x-for="(t, i) in teachers" :key="t.id">
-                        <tr class="border-b border-gray-700 hover:bg-gray-700">
-                            <td class="py-2 px-3" x-text="i + 1"></td>
-                            <td class="py-2 px-3" x-text="t.name"></td>
-                            <td class="py-2 px-3" x-text="t.description ?? '-'"></td>
-                            <td class="py-2 px-3" x-text="t.rate ?? '-'"></td>
-                            <td class="py-2 px-3">
-                                <template x-if="t.image">
-                                    <img :src="`/storage/${t.image}`" alt=""
-                                        class="w-10 h-10 rounded-full object-cover">
-                                </template>
-                                <template x-if="!t.image">
-                                    <div
-                                        class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center text-sm">
-                                        N/A</div>
-                                </template>
-                            </td>
-                            <td class="py-2 px-3" x-text="t.role?.role_name ?? '-'"></td>
-                            <td class="py-2 px-3" x-text="new Date(t.created_at).toLocaleString()"></td>
-                            <td class="py-2 px-3">
-                                <button @click="openModal('edit', t)"
-                                    class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
-                                <button @click="deleteTeacher(t.id)"
-                                    class="bg-red-600 px-3 py-1 rounded hover:bg-red-500 ml-2">Hapus</button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
+                            <template x-for="(t, i) in teachers" :key="t.id">
+                                <tr class="border-b border-gray-700 hover:bg-gray-700">
+                                    <td class="py-2 px-3" x-text="i + 1"></td>
+                                    <td class="py-2 px-3" x-text="t.name"></td>
+                                    <td class="py-2 px-3" x-text="t.description ?? '-'"></td>
+                                    <td class="py-2 px-3" x-text="t.rate ?? '-'"></td>
+                                    <td class="py-2 px-3">
+                                        <template x-if="t.image">
+                                            <img :src="`/storage/${t.image}`" alt=""
+                                                class="w-10 h-10 rounded-full object-cover">
+                                        </template>
+                                        <template x-if="!t.image">
+                                            <div
+                                                class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center text-sm">
+                                                N/A</div>
+                                        </template>
+                                    </td>
+                                    <td class="py-2 px-3" x-text="t.role?.role_name ?? '-'"></td>
+                                    <td class="py-2 px-3" x-text="new Date(t.created_at).toLocaleString()"></td>
+                                    <td class="py-2 px-3">
+                                        <div
+                                            class="flex flex-col sm:flex-row justify-between sm:justify-start gap-2 sm:gap-1">
+                                            <button @click="openModal('edit', t)"
+                                                class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 text-sm sm:text-base">
+                                                Edit
+                                            </button>
+                                            <button @click="deleteTeacher(t.id)"
+                                                class="bg-red-600 px-3 py-1 rounded hover:bg-red-500 text-sm sm:text-base">
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Modal -->

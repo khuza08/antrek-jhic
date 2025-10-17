@@ -44,7 +44,7 @@ localStorage.setItem('darkMode', 'true');"
 
         {{-- Main Content --}}
         <main
-            class="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300 text-gray-900 dark:text-gray-100">
+            class="flex-1 p-6 bg-gray-100 dark:bg-gray-900 min-h-[calc(100vh-64px)] overflow-auto pb-20 transition-colors duration-300 text-gray-900 dark:text-gray-100">
             @yield('content')
         </main>
 

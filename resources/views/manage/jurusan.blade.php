@@ -12,37 +12,42 @@
                 <button @click="openModal()" class="bg-green-600 px-3 py-1 rounded hover:bg-green-500">Tambah Jurusan</button>
             </div>
 
-            <table class="w-full text-left border-collapse">
-                <thead class="border-b border-gray-600">
-                    <tr>
-                        <th class="py-2 px-3">No</th>
-                        <th class="py-2 px-3">Nama</th>
-                        <th class="py-2 px-3">Deskripsi</th>
-                        <th class="py-2 px-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template x-if="majors.length === 0">
-                        <tr>
-                            <td colspan="4" class="text-center py-4">Belum ada data</td>
-                        </tr>
-                    </template>
 
-                    <template x-for="(m, index) in majors" :key="m.id">
-                        <tr class="border-b border-gray-700 hover:bg-gray-700">
-                            <td class="py-2 px-3" x-text="index + 1"></td>
-                            <td class="py-2 px-3" x-text="m.name"></td>
-                            <td class="py-2 px-3" x-text="m.description || '-'"></td>
-                            <td class="py-2 px-3 space-x-2">
-                                <button @click="editMajor(m)"
-                                    class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
-                                <button @click="deleteMajor(m.id)"
-                                    class="bg-red-600 px-3 py-1 rounded hover:bg-red-500">Hapus</button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
+            <div class="overflow-x-auto rounded-lg">
+                <div class="w-full text-left border-collapse min-w-[600px]">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="border-b border-gray-600">
+                            <tr>
+                                <th class="py-2 px-3">No</th>
+                                <th class="py-2 px-3">Nama</th>
+                                <th class="py-2 px-3">Deskripsi</th>
+                                <th class="py-2 px-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-if="majors.length === 0">
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">Belum ada data</td>
+                                </tr>
+                            </template>
+
+                            <template x-for="(m, index) in majors" :key="m.id">
+                                <tr class="border-b border-gray-700 hover:bg-gray-700">
+                                    <td class="py-2 px-3" x-text="index + 1"></td>
+                                    <td class="py-2 px-3" x-text="m.name"></td>
+                                    <td class="py-2 px-3" x-text="m.description || '-'"></td>
+                                    <td class="py-2 px-3 space-x-2">
+                                        <button @click="editMajor(m)"
+                                            class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Edit</button>
+                                        <button @click="deleteMajor(m.id)"
+                                            class="bg-red-600 px-3 py-1 rounded hover:bg-red-500">Hapus</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Modal -->

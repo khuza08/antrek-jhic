@@ -33,42 +33,45 @@
         </div>
 
         <!-- Tabel data terbaru -->
-        <div class="bg-gray-800 text-white rounded-lg shadow p-4">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold">Aktivitas Terbaru</h2>
-                <button class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500">Lihat Semua</button>
+        <div class="bg-gray-800 text-white rounded-lg shadow p-4 mb-20 sm:mb-8">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+                <h2 class="text-lg font-semibold text-center sm:text-left">Aktivitas Terbaru</h2>
+                <button class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 w-full sm:w-auto">Lihat Semua</button>
             </div>
 
-            <table class="w-full text-left border-collapse">
-                <thead class="border-b border-gray-600">
-                    <tr>
-                        <th class="py-2 px-3">#</th>
-                        <th class="py-2 px-3">Nama Aktivitas</th>
-                        <th class="py-2 px-3">Kategori</th>
-                        <th class="py-2 px-3">Tanggal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-gray-700 hover:bg-gray-700">
-                        <td class="py-2 px-3">1</td>
-                        <td class="py-2 px-3">Tambah Guru Baru</td>
-                        <td class="py-2 px-3">Guru</td>
-                        <td class="py-2 px-3">2025-10-14</td>
-                    </tr>
-                    <tr class="border-b border-gray-700 hover:bg-gray-700">
-                        <td class="py-2 px-3">2</td>
-                        <td class="py-2 px-3">Edit Data Jurusan</td>
-                        <td class="py-2 px-3">Majors</td>
-                        <td class="py-2 px-3">2025-10-13</td>
-                    </tr>
-                    <tr class="border-b border-gray-700 hover:bg-gray-700">
-                        <td class="py-2 px-3">3</td>
-                        <td class="py-2 px-3">Tambah Prestasi Baru</td>
-                        <td class="py-2 px-3">Achievements</td>
-                        <td class="py-2 px-3">2025-10-12</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Tambah scroll horizontal di mobile -->
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[500px] text-left border-collapse">
+                    <thead class="border-b border-gray-600">
+                        <tr>
+                            <th class="py-2 px-3">No</th>
+                            <th class="py-2 px-3">Nama Aktivitas</th>
+                            <th class="py-2 px-3">Kategori</th>
+                            <th class="py-2 px-3">Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700 hover:bg-gray-700">
+                            <td class="py-2 px-3">1</td>
+                            <td class="py-2 px-3">Tambah Guru Baru</td>
+                            <td class="py-2 px-3">Guru</td>
+                            <td class="py-2 px-3">2025-10-14</td>
+                        </tr>
+                        <tr class="border-b border-gray-700 hover:bg-gray-700">
+                            <td class="py-2 px-3">2</td>
+                            <td class="py-2 px-3">Edit Data Jurusan</td>
+                            <td class="py-2 px-3">Majors</td>
+                            <td class="py-2 px-3">2025-10-13</td>
+                        </tr>
+                        <tr class="border-b border-gray-700 hover:bg-gray-700">
+                            <td class="py-2 px-3">3</td>
+                            <td class="py-2 px-3">Tambah Prestasi Baru</td>
+                            <td class="py-2 px-3">Achievements</td>
+                            <td class="py-2 px-3">2025-10-12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
