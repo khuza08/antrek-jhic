@@ -14,19 +14,19 @@ export default function Kepsek() {
 
   {/* kolom kanan */}
   <div className="w-full md:w-1/2 flex flex-col items-center md:items-start justify-center py-8 text-center md:text-left">
-    <div className="border-4 border-black/20 dark:border-white/20 rounded-full px-4 py-2 inline-block mb-4">
+    <div className="inline-block mb-4">
       <h2 className="text-xl md:text-2xl text-gray-800 dark:text-gray-100 font-semibold">
-        Meet the{' '}
+        Sambutan{' '}
         <span
           className="text-blue-600 dark:text-blue-400 italic"
           style={{ fontFamily: "'Instrument Serif', serif" }}
         >
-          Principal
+          Kepala Sekolah
         </span>
       </h2>
     </div>
 
-    <p className="text-gray-800 dark:text-gray-100 mb-6 text-base md:text-lg italic font-mono tracking-tight leading-tight">
+    <p className="text-black/50 dark:text-white/70 text-base md:text-lg tracking-tight leading-tight">
       Thank God, I never stop saying it because thanks to His grace, grace
       and guidance, our beloved school website, SMK Antarctica 2 Sidoarjo
       was successfully published. I would like to thank the team behind the
@@ -34,11 +34,8 @@ export default function Kepsek() {
       was finally published to the general public.
     </p>
 
-    <button className="bg-blue-500 rounded-full px-6 py-2 transition duration-200 shadow-lg hover:bg-blue-700 hover:shadow-blue-500/20">
-      <p className="text-gray-100 dark:text-gray-100 text-base md:text-lg font-semibold">
-        Learn More
-      </p>
-    </button>
+    <p className="text-black dark:text-white font-bold py-4">- Retno Purwolystiorini, SE., M.M.Pd</p>
+    
   </div>
 </section>
 
