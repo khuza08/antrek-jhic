@@ -41,7 +41,10 @@ export default function CardPrestasi() {
 
   // subcomponent
   const AchievementCard = ({ achievement }) => (
-    <div className="group relative bg-white dark:bg-white/5 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-200 dark:border-white/20">
+    <div className="group relative bg-white dark:bg-white/5 rounded-xl shadow-lg overflow-hidden 
+    transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-200
+     dark:border-white/20"
+          >
       <div className="h-48 overflow-hidden">
         <img
           src={achievement.image}
@@ -115,7 +118,7 @@ export default function CardPrestasi() {
   return (
     <section className="min-h-screen py-16 bg-blue-100 dark:bg-slate-900 flex items-center justify-center">      
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-8">
+      <div className="text-center mb-8" data-aos="fade-in">
         <SectionTitle >
           Prestasi <span className='italic text-blue-600 dark:text-blue-400' style={{ fontFamily: "'Instrument Serif', serif" }}>Terbaru</span>
         </SectionTitle>

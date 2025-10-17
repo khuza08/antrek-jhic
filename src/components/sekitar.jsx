@@ -18,14 +18,14 @@ export default function InstagramSection() {
 
   return (
     <section className="py-16 bg-blue-100 dark:bg-slate-900">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className='text-center py-8'>
+      <div className="max-w-6xl mx-auto px-4" data-aos="fade-in">
+        <div className='text-center py-8' >
           <SectionTitle>
             Around the <span className='italic text-blue-600 dark:text-blue-400' style={{ fontFamily: "'Instrument Serif', serif" }}>
               School
             </span>
           </SectionTitle>
-          <p className="mt-4 text-gray-700 dark:text-slate-300 max-w-2xl mx-auto">
+          <p data-aos="fade-in" className="mt-4 text-gray-700 dark:text-slate-300 max-w-2xl mx-auto">
             Lihat momen-momen terbaik kami di Instagram
           </p>
         </div>

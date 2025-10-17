@@ -99,9 +99,10 @@ export default function Alumni() {
   return (
     <section className="w-full min-h-screen bg-blue-100 dark:bg-slate-900 py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 w-full">
-        <div className="text-center py-4 mb-12">
+        <div className="text-center py-4 mb-12" data-aos="fade-in">
           <SectionTitle>
-            Apa Kata <span className="italic text-blue-600 dark:text-blue-400" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            Apa Kata <span className="italic text-blue-600 dark:text-blue-400" style={{ fontFamily: "'Instrument Serif', serif" }}
+            data-aos="fade-up">
               Alumni?
             </span>
           </SectionTitle>

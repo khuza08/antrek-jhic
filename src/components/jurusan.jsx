@@ -29,16 +29,17 @@ const Jurusan = () => {
     <section className="w-full bg-gradient-to-b from-blue-100 to-white dark:from-slate-900 dark:to-gray-800 py-16 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4" data-aos="fade-in">
             Program{" "}
             <span
               className="italic text-blue-600 dark:text-blue-400"
               style={{ fontFamily: "'Instrument Serif', serif" }}
+              data-aos="fade-in"
             >
               Keahlian
             </span>
           </h2>
-          <p className="text-gray-600 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-slate-300 max-w-2xl mx-auto" data-aos="fade-up">
             Pilih program keahlian yang sesuai dengan minat dan bakat Anda
           </p>
         </div>

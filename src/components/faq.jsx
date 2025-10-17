@@ -21,11 +21,11 @@ export default function Faq() {
   return (
     <section className="w-full bg-blue-100 dark:bg-slate-900 py-16">
       <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">
+        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white" data-aos="fade-in">
           Frequently <span className='italic text-blue-600 dark:text-blue-400 text-4xl' style={{ fontFamily: "'Instrument Serif', serif" }}>Asked</span> Question.
         </h2>
         
-        <div className="space-y-4">
+        <div className="space-y-4" data-aos="fade-up">
           {faqs.map((faq, idx) => (
             <div 
               key={idx} 
