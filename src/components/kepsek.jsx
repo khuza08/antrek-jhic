@@ -4,7 +4,7 @@ export default function Kepsek() {
   return (
     <section className="flex flex-col md:flex-row bg-blue-100 dark:bg-slate-900 px-6 md:px-12 gap-y-6 md:gap-x-8">
   {/* kolom kiri */}
-<div className="w-full md:w-1/2 h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]">
+<div className="py-12 pl-24 w-full md:w-1/2 h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]">
   <img
     src={kepsekImage}
     alt="Kepala Sekolah"
@@ -26,7 +26,7 @@ export default function Kepsek() {
       </h2>
     </div>
 
-    <p className="text-black/50 dark:text-white/70 text-base md:text-lg tracking-tight leading-tight">
+    <p className="pr-24 text-black/50 dark:text-white/70 text-base md:text-lg tracking-tight leading-tight">
       Thank God, I never stop saying it because thanks to His grace, grace
       and guidance, our beloved school website, SMK Antarctica 2 Sidoarjo
       was successfully published. I would like to thank the team behind the
