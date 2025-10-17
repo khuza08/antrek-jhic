@@ -1,6 +1,5 @@
 import Hero from '../components/hero'
 import Prestasi from '../components/cardPrestasi'
-import Slogan from '../components/sloganSekolah'
 import Kepsek from '../components/kepsek';
 import { DivSpacer } from '../components/spacer';
 import Jurusan from '../components/jurusan';
@@ -17,18 +16,16 @@ export default function Home() {
 
       <Kepsek />
       <DivSpacer />
-      <Slogan />
-      <DivSpacer /> 
 
       <DivSpacer />
       <Prestasi />
-            <DivSpacer />
+      <DivSpacer />
 
       <Jurusan />
       <News />
       <DivSpacer />
       <Alumni />
-            <DivSpacer />
+      <DivSpacer />
       <Sekitar />
       <DivSpacer />
       <Faq />
