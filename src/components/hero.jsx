@@ -11,7 +11,7 @@ export default function Hero() {
       const newImage = Math.floor(Math.random() * TOTAL_IMAGES) + 1;
       setCurrentImage(nextImage);
       setNextImage(newImage);
-    }, 1500);
+    }, 4096);
 
     return () => clearInterval(interval);
   }, [nextImage]);
