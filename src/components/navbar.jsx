@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import logoLight from '../assets/images/logo_embed.png';        // white text (for dark mode)
 import logoDark from '../assets/images/logo_embed_dark.png';    // black text (for light mode)
@@ -6,34 +6,51 @@ import logoDark from '../assets/images/logo_embed_dark.png';    // black text (f
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
 
   // Detect OS theme ONCE at mount
   const [logoSrc, setLogoSrc] = useState(() => {
-    // SSR-safe
     if (typeof window === 'undefined') return logoLight;
-
-    // Use matchMedia to detect OS preference
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     return prefersDark ? logoLight : logoDark;
   });
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll when mobile menu or contact form is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
+    document.body.style.overflow = menuOpen || showContactForm ? 'hidden' : 'auto';
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [menuOpen]);
+  }, [menuOpen, showContactForm]);
+
+  // Close contact form on Escape key
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Escape') {
+      setShowContactForm(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (showContactForm) {
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showContactForm, handleKeyDown]);
 
   // Detect scroll for header styling
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const closeContactForm = () => setShowContactForm(false);
 
   return (
     <>
@@ -55,7 +72,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto flex items-center justify-center py-4 px-6 relative">
           {/* Logo - left */}
           <div className="absolute left-6">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center" onClick={closeContactForm}>
               <img
                 src={logoSrc}
                 alt="SMK Antartika 2 Sidoarjo"
@@ -66,7 +83,7 @@ export default function Header() {
 
           {/* Centered desktop navigation */}
           <nav className="hidden md:flex space-x-8 items-center justify-center">
-            <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-300 transition">
+            <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-300 transition" onClick={closeContactForm}>
               Beranda
             </Link>
 
@@ -87,18 +104,21 @@ export default function Header() {
                 <Link
                   to="/tentang/sejarah"
                   className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+                  onClick={closeContactForm}
                 >
                   Sejarah
                 </Link>
                 <Link
                   to="/tentang/visi-misi"
                   className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+                  onClick={closeContactForm}
                 >
                   Visi & Misi
                 </Link>
                 <Link
                   to="/tentang/struktur"
                   className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+                  onClick={closeContactForm}
                 >
                   Struktur Organisasi
                 </Link>
@@ -122,34 +142,36 @@ export default function Header() {
                 <Link
                   to="/guru/daftar"
                   className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+                  onClick={closeContactForm}
                 >
                   Daftar Guru
                 </Link>
                 <Link
                   to="/guru/staf"
                   className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+                  onClick={closeContactForm}
                 >
                   Staf Pengajar
                 </Link>
               </div>
             </div>
 
-            <Link to="/achievements" className="hover:text-blue-600 dark:hover:text-blue-300 transition">
+            <Link to="/achievements" className="hover:text-blue-600 dark:hover:text-blue-300 transition" onClick={closeContactForm}>
               Prestasi
             </Link>
-            <Link to="/gallery" className="hover:text-blue-600 dark:hover:text-blue-300 transition">
+            <Link to="/gallery" className="hover:text-blue-600 dark:hover:text-blue-300 transition" onClick={closeContactForm}>
               Galeri
             </Link>
           </nav>
 
           {/* "Hubungi" button - desktop */}
           <div className="absolute right-6 hidden md:block">
-            <Link
-              to="/contact"
+            <button
+              onClick={() => setShowContactForm(true)}
               className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-full hover:bg-blue-700 dark:hover:bg-blue-600 transition"
             >
               Hubungi
-            </Link>
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -185,22 +207,123 @@ export default function Header() {
                 key={idx}
                 to={item.to}
                 className="hover:text-blue-600 dark:hover:text-blue-300 transition py-2 border-b border-blue-200 dark:border-white/30"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  setMenuOpen(false);
+                  closeContactForm();
+                }}
               >
                 {item.text}
               </Link>
             ))}
 
-            <Link
-              to="/contact"
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                setShowContactForm(true);
+              }}
               className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition text-center mt-2"
-              onClick={() => setMenuOpen(false)}
             >
-              Hubungi
-            </Link>
+              Kontak
+            </button>
           </div>
         </div>
       </header>
+
+      {/* Contact Form Overlay */}
+      {showContactForm && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={closeContactForm}
+          />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-slate-700 w-full max-w-md relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close (×) button */}
+              <button
+                onClick={closeContactForm}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-300 focus:outline-none"
+                aria-label="Close form"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-6 text-center">
+                Kirim Pesan
+              </h3>
+              <form
+                className="space-y-6"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // TODO: handle form submission
+                  closeContactForm();
+                }}
+              >
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                      Nama Lengkap
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Masukkan nama Anda"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="email@contoh.com"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                    Subjek
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Apa yang ingin Anda tanyakan?"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                    Pesan
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={5}
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Tulis pesan Anda disini..."
+                    required
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200 shadow-lg hover:shadow-blue-500/20"
+                >
+                  Kirim Pesan
+                </button>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
