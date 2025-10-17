@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import logoImage from '../assets/images/logo_embed.png';
-
+import logoLight from '../assets/images/logo_embed.png';        // white text (for dark mode)
+import logoDark from '../assets/images/logo_embed_dark.png';    // black text (for light mode)
 
 export default function Footer() {
+  // Detect OS theme once on mount
+  const [logoSrc, setLogoSrc] = useState(() => {
+    if (typeof window === 'undefined') return logoLight;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? logoLight : logoDark;
+  });
+
   return (
-    <footer className="bg-blue-100 dark:bg-gray-900 py-4 px-18">
-
-      <div className="bg-white dark:bg-gray-900/5 shadow-xl backdrop-blur-lg w-full
-       max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8
-        rounded-2xl border-4 border-blue-100/80 dark:border-gray-800">
-
-       {/* Kolom 1: Logo & Info Sekolah */}
+    <footer className="bg-blue-100 dark:bg-gray-900 py-4 px-4 md:px-18">
+      <div className="bg-white dark:bg-gray-900/5 shadow-xl backdrop-blur-lg w-full max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8 rounded-2xl border-4 border-blue-100/80 dark:border-gray-800">
+        {/* Kolom 1: Logo & Info Sekolah */}
         <div className="flex flex-col justify-between h-full">
           {/* Bagian Atas: Logo + Info Kontak */}
           <div>
             <div className="flex items-center mb-6">
               <img
-                src={logoImage}
+                src={logoSrc}
                 alt="Logo SMK Antartika Sidoarjo"
-                className="w-auto h-auto mr-3" // pastikan ukuran konsisten
+                className="w-auto h-12 object-contain"
               />
             </div>
 
@@ -31,7 +34,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* sosmed */}
+          {/* Sosial Media */}
           <div className="flex justify-start space-x-4 mt-6 pt-4 border-t border-gray-700 text-white">
             {/* Instagram */}
             <a
@@ -78,19 +81,18 @@ export default function Footer() {
         <div>
           {/* Address */}
           <div className="mb-6">
-            <h3 className="font-semibold mb-4 text-black">Address</h3>
+            <h3 className="font-semibold mb-4 text-black dark:text-white">Address</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start">
-                <FaMapMarkerAlt className="mt-0.5 mr-2 flex-shrink-0 opacity-80" />
-                <span className="text-black/80 dark:text-white/80">Jl. Raya Siwalanpanji No.6, Bedrek, Siwalanpanji, 
-                Kec. Buduran, Kabupaten Sidoarjo, Jawa Timur 61252</span>
+                <FaMapMarkerAlt className="text-black dark:text-white mt-0.5 mr-2 flex-shrink-0 opacity-80" />
+                <span className="text-black/80 dark:text-white/80">Jl. Raya Siwalanpanji No.6, Bedrek, Siwalanpanji, Kec. Buduran, Kabupaten Sidoarjo, Jawa Timur 61252</span>
               </li>
               <li className="flex items-center">
-                <FaPhone className="mr-2 flex-shrink-0 opacity-80" />
+                <FaPhone className="text-black dark:text-white mr-2 flex-shrink-0 opacity-80" />
                 <span className="text-black/80 dark:text-white/80">(031) 8065117</span>
               </li>
               <li className="flex items-center">
-                <FaEnvelope className="mr-2 flex-shrink-0 opacity-80" />
+                <FaEnvelope className="text-black dark:text-white mr-2 flex-shrink-0 opacity-80" />
                 <span className="text-black/80 dark:text-white/80">info@smkantartika2sda.sch.id</span>
               </li>
             </ul>
@@ -98,18 +100,18 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold mb-4">Quick Links</h3>
+            <h3 className="font-semibold mb-4 text-black dark:text-white">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-blue-400">Visi dan Misi</a></li>
-              <li><a href="#" className="hover:text-blue-400">Tentang Kami</a></li>
-              <li><a href="#" className="hover:text-blue-400">Jurusan</a></li>
+              <li><a href="/tentang/visi-misi" className="text-black/80 dark:text-white/80 hover:text-blue-600 dark:hover:text-blue-400 transition">Visi dan Misi</a></li>
+              <li><a href="/tentang" className="text-black/80 dark:text-white/80 hover:text-blue-600 dark:hover:text-blue-400 transition">Tentang Kami</a></li>
+              <li><a href="/jurusan" className="text-black/80 dark:text-white/80 hover:text-blue-600 dark:hover:text-blue-400 transition">Jurusan</a></li>
             </ul>
           </div>
         </div>
 
         {/* Kolom 3: Lokasi Sekolah (Google Maps) */}
         <div>
-          <h3 className="font-semibold mb-4">Lokasi Sekolah</h3>
+          <h3 className="font-semibold mb-4 text-black dark:text-white">Lokasi Sekolah</h3>
           <div className="space-y-4">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.133840626677!2d112.7257401!3d-7.4335229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e6a886bb12af%3A0xfd09f08967a2d26f!2sSMK%20Antartika%202%20Sidoarjo!5e0!3m2!1sen!2sid!4v1734330000000!5m2!1sen!2sid"
@@ -122,16 +124,21 @@ export default function Footer() {
             ></iframe>
           </div>
         </div>
-        
       </div>
 
       <p className="flex items-center justify-center text-black/80 dark:text-white/50 py-4">
         alderlake © Copyright 2025. All Rights Reserved.
       </p>
 
-      <script async id="vectorshift-chat-widget" src="https://app.vectorshift.ai/chatWidget.js" 
-      chatbot-id="68a2bb2c43e5f81a98ff78f7" chatbot-height="600px" chatbot-width="400px" />
-
+      {/* Chatbot Widget */}
+      <script
+        async
+        id="vectorshift-chat-widget"
+        src="https://app.vectorshift.ai/chatWidget.js"
+        chatbot-id="68a2bb2c43e5f81a98ff78f7"
+        chatbot-height="600px"
+        chatbot-width="400px"
+      />
     </footer>
   );
 }
