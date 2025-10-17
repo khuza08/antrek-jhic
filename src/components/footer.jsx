@@ -5,9 +5,11 @@ import logoImage from '../assets/images/logo_embed.png';
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900 text-white py-4 px-18">
+    <footer className="bg-blue-100 dark:bg-gray-900 py-4 px-18">
 
-      <div className="bg-gray-900/10 backdrop-blur-lg w-full max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8 rounded-2xl border-4 border-gray-800">
+      <div className="bg-white dark:bg-gray-900/5 shadow-xl backdrop-blur-lg w-full
+       max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8
+        rounded-2xl border-4 border-blue-100/80 dark:border-gray-800">
 
        {/* Kolom 1: Logo & Info Sekolah */}
         <div className="flex flex-col justify-between h-full">
@@ -21,7 +23,7 @@ export default function Footer() {
               />
             </div>
 
-            <div className="space-y-4 text-sm p-2">
+            <div className="space-y-4 text-sm p-2 text-black/80 dark:text-white/80">
               <div>
                 Terwujudnya siswa dan siswi SMK Antartika Sidoarjo yang memiliki budi pekerti luhur, 
                 wawasan Imtaq dan Iptek, ketrampilan, jiwa berwirausaha dan mampu bersaing di Era Global.
@@ -30,7 +32,7 @@ export default function Footer() {
           </div>
 
           {/* sosmed */}
-          <div className="flex justify-start space-x-4 mt-6 pt-4 border-t border-gray-700">
+          <div className="flex justify-start space-x-4 mt-6 pt-4 border-t border-gray-700 text-white">
             {/* Instagram */}
             <a
               href="https://www.instagram.com/smkantartika2sda/"
@@ -76,20 +78,20 @@ export default function Footer() {
         <div>
           {/* Address */}
           <div className="mb-6">
-            <h3 className="font-semibold mb-4">Address</h3>
+            <h3 className="font-semibold mb-4 text-black">Address</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start">
-                <FaMapMarkerAlt className="mt-0.5 mr-2 flex-shrink-0 opacity-50" />
-                <span>Jl. Raya Siwalanpanji No.6, Bedrek, Siwalanpanji, 
+                <FaMapMarkerAlt className="mt-0.5 mr-2 flex-shrink-0 opacity-80" />
+                <span className="text-black/80 dark:text-white/80">Jl. Raya Siwalanpanji No.6, Bedrek, Siwalanpanji, 
                 Kec. Buduran, Kabupaten Sidoarjo, Jawa Timur 61252</span>
               </li>
               <li className="flex items-center">
-                <FaPhone className="mr-2 flex-shrink-0 opacity-50" />
-                <span>(031) 8065117</span>
+                <FaPhone className="mr-2 flex-shrink-0 opacity-80" />
+                <span className="text-black/80 dark:text-white/80">(031) 8065117</span>
               </li>
               <li className="flex items-center">
-                <FaEnvelope className="mr-2 flex-shrink-0 opacity-50" />
-                <span>info@smkantartika2sda.sch.id</span>
+                <FaEnvelope className="mr-2 flex-shrink-0 opacity-80" />
+                <span className="text-black/80 dark:text-white/80">info@smkantartika2sda.sch.id</span>
               </li>
             </ul>
           </div>
@@ -123,7 +125,7 @@ export default function Footer() {
         
       </div>
 
-      <p className="flex items-center justify-center text-white/50 py-4">
+      <p className="flex items-center justify-center text-black/80 dark:text-white/50 py-4">
         alderlake © Copyright 2025. All Rights Reserved.
       </p>
 
