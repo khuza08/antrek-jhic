@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import SectionTitle from './sectionTitle';
 import Marquee from 'react-fast-marquee';
 
@@ -47,10 +48,7 @@ export default function Alumni() {
     },
   ];
 
-  // Duplicate to ensure seamless infinite loop
   const duplicated = [...testimonials, ...testimonials];
-
-  // Split into two halves for two rows
   const mid = duplicated.length / 2;
   const firstRow = duplicated.slice(0, mid);
   const secondRow = duplicated.slice(mid);
@@ -81,6 +79,23 @@ export default function Alumni() {
     </div>
   );
 
+  const [gradientColor, setGradientColor] = useState('#dbeafe');
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const updateTheme = () => {
+      const isDark = mediaQuery.matches;
+      setGradientColor(isDark ? '#0e172b' : '#dbeafe');
+    };
+
+    updateTheme();
+
+    mediaQuery.addEventListener('change', updateTheme);
+
+    return () => mediaQuery.removeEventListener('change', updateTheme);
+  }, []);
+
   return (
     <section className="w-full min-h-screen bg-blue-100 dark:bg-slate-900 py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 w-full">
@@ -96,14 +111,28 @@ export default function Alumni() {
         </div>
 
         {/* First row: left to right */}
-        <Marquee speed={30} pauseOnHover gradient={false} className="mb-6">
+        <Marquee
+          speed={30}
+          pauseOnHover
+          gradient={true}
+          gradientWidth={100}
+          gradientColor={gradientColor}
+          className="mb-6"
+        >
           {firstRow.map((alumni, i) => (
             <Card key={`row1-${i}`} alumni={alumni} />
           ))}
         </Marquee>
 
         {/* Second row: right to left */}
-        <Marquee speed={30} pauseOnHover gradient={false} direction="right">
+        <Marquee
+          speed={30}
+          pauseOnHover
+          gradient={true}
+          gradientWidth={100}
+          gradientColor={gradientColor}
+          direction="right"
+        >
           {secondRow.map((alumni, i) => (
             <Card key={`row2-${i}`} alumni={alumni} />
           ))}
