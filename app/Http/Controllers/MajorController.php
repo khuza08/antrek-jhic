@@ -12,7 +12,9 @@ class MajorController extends Controller
      */
     public function index()
     {
-        $majors = Major::all();
+        // Ambil semua jurusan beserta kategori
+        $majors = Major::with('category')->get();
+
         return response()->json($majors);
     }
 
@@ -21,19 +23,17 @@ class MajorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255|unique:majors,name',
+            'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string'
         ]);
 
-        $major = Major::create([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
+        $major = Major::create($validated);
 
         return response()->json([
             'message' => 'Major created successfully',
-            'data' => $major
+            'data' => $major->load('category')
         ], 201);
     }
 
@@ -42,7 +42,7 @@ class MajorController extends Controller
      */
     public function show(string $id)
     {
-        $major = Major::findOrFail($id);
+        $major = Major::with('category')->findOrFail($id);
         return response()->json($major);
     }
 
@@ -53,19 +53,17 @@ class MajorController extends Controller
     {
         $major = Major::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255|unique:majors,name,' . $id,
+            'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string'
         ]);
 
-        $major->update([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
+        $major->update($validated);
 
         return response()->json([
             'message' => 'Major updated successfully',
-            'data' => $major
+            'data' => $major->load('category')
         ]);
     }
 

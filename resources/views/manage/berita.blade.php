@@ -70,9 +70,9 @@
         </div>
 
         <!-- Modal -->
-        <div x-show="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            x-transition>
-            <div class="bg-gray-900 p-6 rounded-lg w-full max-w-lg">
+        <div x-show="showModal"
+            class="fixed inset-0 bg-black/60 z-50 flex justify-center items-start overflow-y-auto p-4 z-40" x-transition>
+            <div class="bg-gray-900 p-6 rounded-lg w-full max-w-lg text-white max-h-[90vh] overflow-y-auto">
                 <h2 class="text-xl font-semibold mb-4" x-text="form.id ? 'Edit Berita' : 'Tambah Berita'"></h2>
 
                 <form @submit.prevent="saveNews">

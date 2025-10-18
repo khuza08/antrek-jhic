@@ -61,8 +61,10 @@
 
         {{-- Modal Box Start --}}
         <div x-show="showModal" x-transition x-cloak
-            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-            <div @click.away="closeModal()" class="bg-gray-900 rounded-lg shadow-lg w-full max-w-md p-6">
+            class="fixed inset-0 bg-black/60 z-60 flex justify-center items-center overflow-y-auto p-4">
+            <!-- Perhatikan perubahan: `items-start` -> `items-center` -->
+            <div @click.away="closeModal()"
+                class="bg-gray-900 rounded-lg shadow-lg w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
                 <h2 class="text-xl font-semibold mb-4" x-text="isEdit ? 'Edit Kategori' : 'Tambah Kategori'"></h2>
 
                 <form @submit.prevent="saveCategory">

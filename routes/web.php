@@ -70,3 +70,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return view('manage.kategori');
     })->name('kategori-table');
 });
+
+// Route::get('/storage/{path}', function ($path) {
+//     $path = storage_path('app/public/' . $path);
+//     if (!file_exists($path)) {
+
+//         abort(404, 'File not found.');
+//     }
+//     return response()->file($path);
+// })->where('path', '.*');

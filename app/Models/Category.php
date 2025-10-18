@@ -10,9 +10,18 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'categories';
+
     protected $fillable = [
         'name',
         'slug',
         'description'
     ];
+
+    /**
+     * Relasi: satu kategori punya banyak jurusan
+     */
+    public function majors()
+    {
+        return $this->hasMany(Major::class);
+    }
 }

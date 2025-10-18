@@ -1,5 +1,5 @@
 <footer
-    class="w-full p-4 text-center border-t border-gray-800 bg-gray-900 text-gray-400 mt-auto fixed bottom-0 left-0 z-50">
+    class="w-full p-4 text-center border-t border-gray-800 bg-gray-900 text-gray-400 mt-auto fixed bottom-0 left-0 z-30">
     <p class="text-xs sm:text-sm">© {{ date('Y') }} AntrekAdmin. All rights reserved.</p>
 </footer>
 
