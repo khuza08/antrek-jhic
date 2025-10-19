@@ -12,7 +12,6 @@ class MajorController extends Controller
      */
     public function index()
     {
-        // Ambil semua jurusan beserta kategori
         $majors = Major::with('category')->get();
 
         return response()->json($majors);

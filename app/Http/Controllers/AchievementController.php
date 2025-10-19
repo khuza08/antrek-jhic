@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Achievement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\support\Facades\Log;
 
 class AchievementController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $achievements = Achievement::with([
-            'user:id,username,email',
-            'category:id,name'
-        ])->get();
-        return response()->json($achievements);
+        $achievements = Achievement::with(['user', 'category'])->get();
+        return response()->json($achievements, 200, [], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     /**
@@ -25,36 +25,51 @@ class AchievementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'rank' => 'nullable|string|max:100',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'date' => 'required|date'
-        ]);
+        try {
+            // $user = auth()->user();
+            // if (!$user) {
+            //     return response()->json(['message' => 'Unauthorized'], 403);
+            // }
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('achievements', 'public');
+            $request->validate([
+                'category_id' => 'required|exists:categories,id',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'excerpt' => 'nullable|string|max:500',
+                'rank' => 'nullable|string|max:100',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'date' => 'required|date'
+            ]);
+
+            $imageData = null;
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $file = $request->file('image');
+                $imageData = file_get_contents($file->getRealPath());
+            }
+
+            $achievement = Achievement::create([
+                'user_id' => 1,
+                'category_id' => $request->category_id,
+                'title' => $request->title,
+                'slug' => Str::slug($request->title),
+                'description' => $request->description,
+                'excerpt' => $request->excerpt,
+                'rank' => $request->rank,
+                'image' => $imageData,
+                'date' => $request->date
+            ]);
+
+            return response()->json([
+                'message' => 'Achievement created successfully',
+                'data' => $achievement
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Error creating achievement: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to create achievement',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $achievement = Achievement::create([
-            'user_id' => $request->user_id,
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'description' => $request->description,
-            'rank' => $request->rank,
-            'image' => $imagePath,
-            'date' => $request->date
-        ]);
-
-        return response()->json([
-            'message' => 'Achievement created successfully',
-            'data' => $achievement
-        ], 201);
     }
 
     /**
@@ -63,7 +78,15 @@ class AchievementController extends Controller
     public function show(string $id)
     {
         $achievement = Achievement::with(['user', 'category'])->findOrFail($id);
-        return response()->json($achievement);
+
+        if (!$achievement->user) {
+            $achievement->user = (object) ['name' => 'User Tidak Ditemukan'];
+        }
+        if (!$achievement->category) {
+            $achievement->category = (object) ['name' => 'Kategori Tidak Ditemukan'];
+        }
+
+        return response()->json($achievement, 200, [], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     /**
@@ -71,38 +94,53 @@ class AchievementController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $achievement = Achievement::findOrFail($id);
+        try {
+            $achievement = Achievement::findOrFail($id);
 
-        $request->validate([
-            'user_id' => 'sometimes|required|exists:users,id',
-            'category_id' => 'sometimes|required|exists:categories,id',
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'rank' => 'nullable|string|max:100',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'date' => 'sometimes|required|date'
-        ]);
+            $request->validate([
+                'category_id' => 'nullable|exists:categories,id',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'excerpt' => 'nullable|string|max:500',
+                'rank' => 'nullable|string|max:100',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'date' => 'required|date'
+            ]);
 
-        $imagePath = $achievement->image;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('achievements', 'public');
+            // Gunakan nilai asli dari database (binary)
+            $imageData = $achievement->getRawOriginal('image');
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $imageData = file_get_contents($file->getRealPath());
+            }
+
+            $achievement->update([
+                'user_id' => 1,
+                'category_id' => $request->category_id,
+                'title' => $request->title,
+                'slug' => $request->title ? Str::slug($request->title) : $achievement->slug,
+                'description' => $request->description,
+                'excerpt' => $request->excerpt,
+                'rank' => $request->rank,
+                'image' => $imageData,
+                'date' => $request->date
+            ]);
+
+            // Refresh model agar accessor getImageAttribute() dipanggil lagi
+            $achievement->refresh();
+
+            return response()->json([
+                'message' => 'Achievement updated successfully',
+                'data' => $achievement
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error updating achievement: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update achievement',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $achievement->update([
-            'user_id' => $request->user_id ?? $achievement->user_id,
-            'category_id' => $request->category_id ?? $achievement->category_id,
-            'title' => $request->title ?? $achievement->title,
-            'slug' => $request->title ? Str::slug($request->title) : $achievement->slug,
-            'description' => $request->description ?? $achievement->description,
-            'rank' => $request->rank ?? $achievement->rank,
-            'image' => $imagePath,
-            'date' => $request->date ?? $achievement->date
-        ]);
-
-        return response()->json([
-            'message' => 'Achievement updated successfully',
-            'data' => $achievement
-        ]);
     }
 
     /**

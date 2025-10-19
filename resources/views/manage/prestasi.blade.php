@@ -27,8 +27,9 @@
                         <thead class="border-b border-gray-600">
                             <tr>
                                 <th class="py-2 px-3">No</th>
-                                <th class="py-2 px-3">Nama</th>
+                                <th class="py-2 px-3">Dibuat</th>
                                 <th class="py-2 px-3">Judul</th>
+                                <th class="py-2 px-3">Excerpt</th>
                                 <th class="py-2 px-3">Rank</th>
                                 <th class="py-2 px-3">Gambar</th>
                                 <th class="py-2 px-3">Kategori</th>
@@ -42,12 +43,18 @@
                                     <td class="py-2 px-3" x-text="index + 1"></td>
                                     <td class="py-2 px-3" x-text="ach.user?.name || 'User 1'"></td>
                                     <td class="py-2 px-3" x-text="ach.title"></td>
+                                    <td class="py-2 px-3" x-text="ach.excerpt || '-'"></td>
                                     <td class="py-2 px-3" x-text="ach.rank"></td>
-                                    <td class="py-2 px-3">
-                                        <img :src="`/storage/${ach.image}`" alt="img"
-                                            class="w-16 h-16 object-cover rounded" x-show="ach.image">
-                                    </td>
                                     <td class="py-2 px-3" x-text="ach.category?.name || '-'"></td>
+                                    <td class="py-2 px-3">
+                                        <template x-if="ach.image">
+                                            <img :src="ach.image" alt="img"
+                                                class="w-16 h-16 object-cover rounded">
+                                        </template>
+                                        <template x-if="!ach.image">
+                                            <span class="text-gray-400">No Image</span>
+                                        </template>
+                                    </td>
                                     <td class="py-2 px-3" x-text="ach.date"></td>
                                     <td class="py-2 px-3 space-x-2">
                                         <button @click="editAchievement(ach)"
@@ -72,6 +79,12 @@
                     <div class="mb-3">
                         <label class="block mb-1">Judul Prestasi</label>
                         <input type="text" x-model="form.title"
+                            class="w-full rounded p-2 bg-gray-800 border border-gray-700">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="block mb-1">Excerpt</label>
+                        <input type="text" x-model="form.excerpt"
                             class="w-full rounded p-2 bg-gray-800 border border-gray-700">
                     </div>
 
@@ -118,8 +131,6 @@
                 </form>
             </div>
         </div>
-
-
     </div>
 
     <script>
@@ -134,12 +145,12 @@
                 form: {
                     id: null,
                     title: '',
+                    excerpt: '',
                     description: '',
                     rank: '',
                     category_id: '',
                     date: '',
                     image: null,
-                    user_id: 1,
                 },
 
                 async init() {
@@ -148,14 +159,33 @@
                 },
 
                 async loadAchievements() {
-                    const res = await fetch('/api/achievements');
-                    this.achievements = await res.json();
+                    try {
+                        const res = await fetch('/api/achievements');
+
+                        if (!res.ok) {
+                            throw new Error(`HTTP error! status: ${res.status}`);
+                        }
+
+                        const data = await res.json();
+
+                        this.achievements = data.map(a => {
+                            if (!a.image) {
+                                a.image = '';
+                            }
+                            return a;
+                        });
+                    } catch (error) {
+                        console.error('Gagal memuat prestasi:', error);
+                        this.alertMessage = `Gagal memuat data: ${error.message}`;
+                        this.alertType = 'error';
+                        setTimeout(() => this.alertMessage = '', 5000);
+                    }
                 },
 
                 async loadCategories() {
                     const res = await fetch('/api/categories');
                     const data = await res.json();
-                    this.categories = data.categories || data; // ✅ fix di sini
+                    this.categories = data.categories || data;
                 },
 
                 openModal() {
@@ -171,47 +201,146 @@
                 previewImage(event) {
                     const file = event.target.files[0];
                     if (file) {
-                        this.form.image = file;
-                        this.preview = URL.createObjectURL(file);
+                        this.compressImage(file).then(compressedFile => {
+                            this.form.image = compressedFile;
+                            this.preview = URL.createObjectURL(compressedFile);
+                        }).catch(err => {
+                            console.error('Gagal kompres gambar:', err);
+                            this.alertMessage = 'Gagal mengompres gambar.';
+                            this.alertType = 'error';
+                            setTimeout(() => this.alertMessage = '', 4000);
+                        });
                     }
                 },
 
+                async compressImage(file) {
+                    const maxWidth = 800; // batas lebar maksimum (px)
+                    const maxHeight = 800; // batas tinggi maksimum (px)
+                    const quality = 0.6; // kualitas 0.0 - 1.0
+
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.src = event.target.result;
+
+                            img.onload = () => {
+                                let width = img.width;
+                                let height = img.height;
+
+                                // ubah ukuran jika lebih besar dari batas
+                                if (width > maxWidth || height > maxHeight) {
+                                    if (width > height) {
+                                        height = Math.round(height * (maxWidth / width));
+                                        width = maxWidth;
+                                    } else {
+                                        width = Math.round(width * (maxHeight / height));
+                                        height = maxHeight;
+                                    }
+                                }
+
+                                // buat canvas
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                canvas.width = width;
+                                canvas.height = height;
+
+                                ctx.drawImage(img, 0, 0, width, height);
+
+                                // ubah ke blob terkompres
+                                canvas.toBlob(
+                                    (blob) => {
+                                        if (!blob) return reject(new Error('Kompresi gagal.'));
+                                        const compressedFile = new File([blob], file.name, {
+                                            type: 'image/jpeg',
+                                            lastModified: Date.now(),
+                                        });
+                                        resolve(compressedFile);
+                                    },
+                                    'image/jpeg',
+                                    quality
+                                );
+                            };
+
+                            img.onerror = () => reject(new Error('Gagal membaca gambar.'));
+                        };
+
+                        reader.onerror = () => reject(new Error('Gagal memuat file.'));
+                    });
+                },
+
+
+
                 editAchievement(ach) {
+                    const {
+                        image,
+                        ...rest
+                    } = ach;
                     this.form = {
-                        ...ach,
-                        user_id: 1
+                        ...rest,
                     };
-                    this.preview = ach.image ? `/storage/${ach.image}` : '';
+                    this.preview = ach.image || '';
                     this.showModal = true;
                 },
 
                 async saveAchievement() {
                     try {
+                        const isEdit = !!this.form.id;
                         const formData = new FormData();
-                        for (const key in this.form) {
-                            if (this.form[key]) formData.append(key, this.form[key]);
+
+                        // Tambahkan semua field non-file
+                        Object.entries(this.form).forEach(([key, value]) => {
+                            if (key !== 'image' && value !== null && value !== undefined && value !== '') {
+                                formData.append(key, value);
+                            }
+                        });
+
+                        // Validasi file gambar
+                        if (this.form.image instanceof File) {
+                            const maxSizeMB = 2;
+                            const fileSizeMB = this.form.image.size / (1024 * 1024);
+                            if (fileSizeMB > maxSizeMB) {
+                                this.alertType = 'error';
+                                this.alertMessage =
+                                    `Ukuran file terlalu besar (${fileSizeMB.toFixed(2)} MB). Maksimal ${maxSizeMB} MB.`;
+                                setTimeout(() => (this.alertMessage = ''), 4000);
+                                return;
+                            }
+                            formData.append('image', this.form.image);
                         }
 
-                        const method = this.form.id ? 'POST' : 'POST';
-                        const url = this.form.id ? `/api/achievements/${this.form.id}?_method=PUT` :
+                        const url = isEdit ?
+                            `/api/achievements/${this.form.id}?_method=PUT` :
                             '/api/achievements';
 
-                        const res = await fetch(url, {
-                            method,
-                            body: formData
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            body: formData,
                         });
-                        if (!res.ok) throw await res.json();
 
-                        this.alertMessage = this.form.id ? 'Prestasi berhasil diperbarui!' :
-                            'Prestasi berhasil ditambahkan!';
+                        // Cek response
+                        const data = await response.json().catch(() => ({}));
+
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Gagal menyimpan data prestasi.');
+                        }
+
+                        // Sukses
                         this.alertType = 'success';
+                        this.alertMessage = isEdit ?
+                            'Prestasi berhasil diperbarui!' :
+                            'Prestasi berhasil ditambahkan!';
                         this.showModal = false;
-                        this.loadAchievements();
-                        setTimeout(() => this.alertMessage = '', 3000);
-                    } catch (e) {
-                        this.alertMessage = 'Terjadi kesalahan, silakan coba lagi.';
+
+                        await this.loadAchievements();
+                        setTimeout(() => (this.alertMessage = ''), 3000);
+                    } catch (err) {
+                        console.error('Error saving achievement:', err);
                         this.alertType = 'error';
-                        setTimeout(() => this.alertMessage = '', 3000);
+                        this.alertMessage = err.message || 'Terjadi kesalahan, silakan coba lagi.';
+                        setTimeout(() => (this.alertMessage = ''), 3000);
                     }
                 },
 
@@ -235,12 +364,12 @@
                     this.form = {
                         id: null,
                         title: '',
+                        excerpt: '',
                         description: '',
                         rank: '',
                         category_id: '',
                         date: '',
                         image: null,
-                        user_id: 1
                     };
                     this.preview = '';
                 }

@@ -24,4 +24,9 @@ class Category extends Model
     {
         return $this->hasMany(Major::class);
     }
+
+    public function achievements()
+    {
+        return $this->hasMany(Achievement::class);
+    }
 }

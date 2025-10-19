@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class NewsController extends Controller
 {
@@ -13,10 +13,22 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::with([
-            'user:id,username,email',
-            'category:id,name'
-        ])->get();
+        $news = News::with(['user:id,username', 'category:id,name'])->get();
+
+        $news->each(function ($item) {
+            if ($item->image) {
+                $header = substr($item->image, 0, 4);
+                $mimeType = match (true) {
+                    str_starts_with($header, "\xFF\xD8\xFF") => 'image/jpeg',
+                    str_starts_with($header, "\x89\x50\x4E\x47") => 'image/png',
+                    str_starts_with($header, "GIF8") => 'image/gif',
+                    str_starts_with($header, "RIFF") && str_contains($item->image, "WEBP") => 'image/webp',
+                    default => 'image/jpeg',
+                };
+                $item->image = "data:{$mimeType};base64," . base64_encode($item->image);
+            }
+        });
+
         return response()->json($news);
     }
 
@@ -25,32 +37,80 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'excerpt' => 'required|string',
-            'content' => 'required|string',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
+        try {
+            // Log request untuk debugging
+            Log::info('Request data:', [
+                'user_id' => $request->user_id,
+                'category_id' => $request->category_id,
+                'title' => $request->title,
+                'has_image' => $request->has('image'),
+                'image_length' => $request->image ? strlen($request->image) : 0
+            ]);
 
-        // $slug = Str::slug($request->title, '-');
-        $imagePath = $request->file('image')->store('news', 'public');
+            // Validasi input
+            $validated = $request->validate([
+                'user_id'     => 'required|integer|exists:users,id',
+                'category_id' => 'required|integer|exists:categories,id',
+                'title'       => 'required|string|max:255',
+                'excerpt'     => 'required|string',
+                'content'     => 'required|string',
+                'image'       => 'nullable|string',
+            ]);
 
-        $news = News::create([
-            'user_id' => $request->user_id,
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            // 'slug' => $slug,
-            'excerpt' => $request->excerpt,
-            'content' => $request->content,
-            'image' => $imagePath
-        ]);
+            $imageData = null;
 
-        return response()->json([
-            'message' => 'News created successfully',
-            'data' => $news
-        ], 201);
+            if ($request->filled('image')) {
+                $image = $request->image;
+
+                // Hapus prefix data URL jika ada
+                if (preg_match('/^data:image\/[a-z]+;base64,/', $image)) {
+                    $image = preg_replace('/^data:image\/[a-z]+;base64,/', '', $image);
+                }
+
+                // Decode base64 ke binary
+                $imageData = base64_decode($image, true);
+
+                // Validasi hasil decode
+                if ($imageData === false || empty($imageData)) {
+                    return response()->json([
+                        'message' => 'Format gambar tidak valid',
+                    ], 422);
+                }
+            }
+
+            // Create news
+            $news = News::create([
+                'user_id'     => $validated['user_id'],
+                'category_id' => $validated['category_id'],
+                'title'       => $validated['title'],
+                'excerpt'     => $validated['excerpt'],
+                'content'     => $validated['content'],
+                'image'       => $imageData,
+            ]);
+
+            Log::info("News created: ID {$news->id}, image: " . ($imageData ? strlen($imageData) . ' bytes' : 'NO'));
+
+            // Prepare response tanpa binary image
+            $responseData = $news->toArray();
+            unset($responseData['image']);
+
+            return response()->json([
+                'message' => 'Berita berhasil ditambahkan!',
+                'data'    => $responseData,
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation Error: ' . json_encode($e->errors()));
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error creating news: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan berita',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -59,6 +119,20 @@ class NewsController extends Controller
     public function show(string $id)
     {
         $news = News::with(['user', 'category'])->findOrFail($id);
+
+        // Convert image to base64 if exists
+        if ($news->image) {
+            $header = substr($news->image, 0, 4);
+            $mimeType = match (true) {
+                str_starts_with($header, "\xFF\xD8\xFF") => 'image/jpeg',
+                str_starts_with($header, "\x89\x50\x4E\x47") => 'image/png',
+                str_starts_with($header, "GIF8") => 'image/gif',
+                str_starts_with($header, "RIFF") && str_contains($news->image, "WEBP") => 'image/webp',
+                default => 'image/jpeg',
+            };
+            $news->image = "data:{$mimeType};base64," . base64_encode($news->image);
+        }
+
         return response()->json($news);
     }
 
@@ -67,41 +141,58 @@ class NewsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $news = News::findOrFail($id);
+        try {
+            $news = News::findOrFail($id);
 
-        $request->validate([
-            'user_id' => 'sometimes|required|exists:users,id',
-            'category_id' => 'sometimes|required|exists:categories,id',
-            'title' => 'sometimes|required|string|max:255',
-            'excerpt' => 'sometimes|required|string',
-            'content' => 'sometimes|required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
+            $validated = $request->validate([
+                'user_id' => 'sometimes|exists:users,id',
+                'category_id' => 'sometimes|exists:categories,id',
+                'title' => 'sometimes|string|max:255',
+                'excerpt' => 'sometimes|string',
+                'content' => 'sometimes|string',
+                'image' => 'nullable|string',
+            ]);
 
-        // $slug = $news->slug;
-        // if ($request->has('title')) {
-        //     $slug = Str::slug($request->title, '-');
-        // }
+            $updateData = [
+                'user_id' => $request->user_id ?? $news->user_id,
+                'category_id' => $request->category_id ?? $news->category_id,
+                'title' => $request->title ?? $news->title,
+                'excerpt' => $request->excerpt ?? $news->excerpt,
+                'content' => $request->content ?? $news->content,
+            ];
 
-        $imagePath = $news->image;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('news', 'public');
+            if ($request->has('image') && $request->image) {
+                $image = $request->image;
+
+                // Remove data URL prefix
+                if (preg_match('/^data:image\/[a-z]+;base64,/', $image)) {
+                    $image = preg_replace('/^data:image\/[a-z]+;base64,/', '', $image);
+                }
+
+                $imageData = base64_decode($image, true);
+                if ($imageData !== false && !empty($imageData)) {
+                    $updateData['image'] = $imageData;
+                    Log::info("Updating image for news ID {$id}");
+                }
+            }
+
+            $news->update($updateData);
+
+            // Remove image from response
+            $responseData = $news->toArray();
+            unset($responseData['image']);
+
+            return response()->json([
+                'message' => 'Berita berhasil diperbarui!',
+                'data' => $responseData,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error updating news: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat update berita',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $news->update([
-            'user_id' => $request->user_id ?? $news->user_id,
-            'category_id' => $request->category_id ?? $news->category_id,
-            'title' => $request->title ?? $news->title,
-            // 'slug' => $slug,
-            'excerpt' => $request->excerpt ?? $news->excerpt,
-            'content' => $request->content ?? $news->content,
-            'image' => $imagePath
-        ]);
-
-        return response()->json([
-            'message' => 'News updated successfully',
-            'data' => $news
-        ]);
     }
 
     /**
@@ -109,11 +200,17 @@ class NewsController extends Controller
      */
     public function destroy(string $id)
     {
-        $news = News::findOrFail($id);
-        $news->delete();
+        try {
+            $news = News::findOrFail($id);
+            $news->delete();
 
-        return response()->json([
-            'message' => 'News deleted successfully'
-        ]);
+            return response()->json(['message' => 'Berita berhasil dihapus!']);
+        } catch (\Exception $e) {
+            Log::error('Error deleting news: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menghapus berita',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
