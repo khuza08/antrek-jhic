@@ -6,7 +6,7 @@ export default function Gallery() {
   }));
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-b from-blue-100 to-white dark:from-slate-900 dark:to-gray-800">
+    <div className="relative w-full h-screen bg-gradient-to-b from-blue-100 to-white dark:from-gray-800 dark:to-gray-900">
 
       <div className="h-full overflow-y-auto">
         <div className="px-8 py-6 mx-auto mt-16">
@@ -28,7 +28,7 @@ export default function Gallery() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-24 pointer-events-none bg-gradient-to-t from-white/80 to-transparent dark:from-gray-800/80" />
+      <div className="absolute bottom-0 left-0 w-full h-24 pointer-events-none bg-gradient-to-t from-white/80 to-transparent dark:from-gray-900" />
     </div>
   );
 }
