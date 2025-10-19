@@ -1,35 +1,38 @@
+// src/components/Header.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import logoLight from '../assets/images/logo_embed.png';        // white text (for dark mode)
-import logoDark from '../assets/images/logo_embed_dark.png';    // black text (for light mode)
-import ContactFormModal from './ContactFormModal'; // <-- impor komponen modal
+import logoLight from '../assets/images/logo_embed.png';
+import logoDark from '../assets/images/logo_embed_dark.png';
+import ContactFormModal from './ContactFormModal';
+import VisiMisiModal from './VisiMisiModal'; // <-- NEW IMPORT
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [showVisiMisi, setShowVisiMisi] = useState(false); // <-- NEW STATE
 
-  // Detect OS theme ONCE at mount
   const [logoSrc, setLogoSrc] = useState(() => {
     if (typeof window === 'undefined') return logoLight;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     return prefersDark ? logoLight : logoDark;
   });
 
-  // Lock body scroll when mobile menu or contact form is open
+  // Lock scroll when any modal or mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen || showContactForm ? 'hidden' : 'auto';
+    document.body.style.overflow = menuOpen || showContactForm || showVisiMisi ? 'hidden' : 'auto';
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [menuOpen, showContactForm]);
+  }, [menuOpen, showContactForm, showVisiMisi]);
 
-  // Close contact form on Escape key
+  // Close modals on Escape
   const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Escape' && showContactForm) {
-      setShowContactForm(false);
+    if (e.key === 'Escape') {
+      if (showContactForm) setShowContactForm(false);
+      if (showVisiMisi) setShowVisiMisi(false);
     }
-  }, [showContactForm]);
+  }, [showContactForm, showVisiMisi]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -38,11 +41,8 @@ export default function Header() {
     };
   }, [handleKeyDown]);
 
-  // Detect scroll for header styling
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -51,7 +51,7 @@ export default function Header() {
 
   return (
     <>
-      {/* Dim overlay for mobile menu */}
+      {/* Mobile menu overlay */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-lg z-40 md:hidden"
@@ -67,7 +67,7 @@ export default function Header() {
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-center py-4 px-6 relative">
-          {/* Logo - left */}
+          {/* Logo */}
           <div className="absolute left-6">
             <Link to="/" className="flex items-center">
               <img
@@ -78,13 +78,13 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Centered desktop navigation */}
+          {/* Desktop Nav */}
           <nav className="hidden md:flex space-x-8 items-center justify-center">
             <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-300 transition">
               Beranda
             </Link>
 
-            {/* Dropdown: Tentang */}
+            {/* Tentang Dropdown */}
             <div className="relative group">
               <button className="flex items-center hover:text-blue-600 dark:hover:text-blue-300 transition">
                 Tentang
@@ -104,12 +104,16 @@ export default function Header() {
                 >
                   Sejarah
                 </Link>
-                <Link
-                  to="/tentang/visi-misi"
-                  className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+                {/* MODAL TRIGGER */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowVisiMisi(true);
+                  }}
+                  className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
                 >
                   Visi & Misi
-                </Link>
+                </button>
                 <Link
                   to="/tentang/struktur"
                   className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
@@ -119,7 +123,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Dropdown: Guru */}
+            {/* Guru Dropdown */}
             <div className="relative group">
               <button className="flex items-center hover:text-blue-600 dark:hover:text-blue-300 transition">
                 Guru
@@ -156,17 +160,17 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* button - desktop */}
+          {/* Desktop Contact Button */}
           <div className="absolute right-6 hidden md:block">
             <button
               onClick={openContactForm}
               className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-full hover:bg-blue-700 dark:hover:bg-blue-600 transition"
             >
-              Kontak  
+              Kontak
             </button>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Menu Button */}
           <div className="absolute right-6 md:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -183,7 +187,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile Menu */}
         <div
           className={`md:hidden ${menuOpen ? 'block' : 'hidden'} bg-gradient-to-b from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 backdrop-blur-lg pb-4 relative z-50`}
         >
@@ -199,13 +203,22 @@ export default function Header() {
                 key={idx}
                 to={item.to}
                 className="hover:text-blue-600 dark:hover:text-blue-300 transition py-2 border-b border-blue-200 dark:border-white/30"
-                onClick={() => {
-                  setMenuOpen(false);
-                }}
+                onClick={() => setMenuOpen(false)}
               >
                 {item.text}
               </Link>
             ))}
+
+            {/* Mobile: Visi & Misi button (optional) */}
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                setShowVisiMisi(true);
+              }}
+              className="text-left py-2 border-b border-blue-200 dark:border-white/30 hover:text-blue-600 dark:hover:text-blue-300"
+            >
+              Visi & Misi
+            </button>
 
             <button
               onClick={() => {
@@ -220,10 +233,14 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Modal dipisah ke komponen terpisah */}
+      {/* Modals */}
       <ContactFormModal
         isOpen={showContactForm}
         onClose={() => setShowContactForm(false)}
+      />
+      <VisiMisiModal
+        isOpen={showVisiMisi}
+        onClose={() => setShowVisiMisi(false)}
       />
     </>
   );
