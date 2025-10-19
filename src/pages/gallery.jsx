@@ -6,7 +6,9 @@ export default function Gallery() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/galleries");
+        const res = await fetch(
+          "https://bealderlake.jh-beon.cloud/api/galleries"
+        );
         if (!res.ok)
           throw new Error("ERROR Failed to fetch images " + res.status);
 

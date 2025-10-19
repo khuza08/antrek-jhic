@@ -6,7 +6,7 @@ export default function News() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/news");
+        const res = await fetch("https://bealderlake.jh-beon.cloud/api/news");
         console.log("Response status:", res.status);
         if (!res.ok) {
           throw new Error("ERROR Failed to fetch news " + res.status);

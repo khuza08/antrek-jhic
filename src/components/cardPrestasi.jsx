@@ -8,7 +8,9 @@ export default function CardPrestasi() {
   useEffect(() => {
     const fetchAchievements = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/achievements");
+        const res = await fetch(
+          "https://bealderlake.jh-beon.cloud/api/achievements"
+        );
 
         if (!res.ok) {
           console.error("HTTP Error Status: " + res.status);

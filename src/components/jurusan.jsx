@@ -7,7 +7,7 @@ const Jurusan = () => {
   useEffect(() => {
     const fetchMajors = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/majors");
+        const res = await fetch("https://bealderlake.jh-beon.cloud/api/majors");
 
         if (!res.ok) {
           throw new Error("HTTP Error Status: " + res.status);
