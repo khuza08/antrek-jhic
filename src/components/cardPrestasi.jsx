@@ -15,7 +15,6 @@ export default function CardPrestasi() {
         }
 
         const data = await res.json();
-        console.info(data);
         if (Array.isArray(data)) {
           setAchievements(data);
         } else if (Array.isArray(data.data)) {

@@ -12,7 +12,6 @@ export default function News() {
           throw new Error("ERROR Failed to fetch news " + res.status);
         }
         const data = await res.json();
-        console.log("Data dari API:", data);
         setNewsData(data || []);
       } catch (err) {
         console.error("Error fetching news:", err);

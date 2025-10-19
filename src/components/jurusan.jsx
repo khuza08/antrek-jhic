@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 const Jurusan = () => {
-  // const [majors, setMajors] = useState([]);
   const [leftColumn, setLeftColumn] = useState([]);
   const [rightColumn, setRightColumn] = useState([]);
 
