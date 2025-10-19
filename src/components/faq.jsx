@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Faq() {
   const faqs = [
@@ -18,7 +18,13 @@ export default function Faq() {
       q: "Bagaimana sistem pembelajarannya?", 
       a: "Kami menggunakan kurikulum nasional yang diperkaya dengan pendekatan pembelajaran aktif dan kreatif." 
     },
-  ]
+  ];
+
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggle = (idx) => {
+    setOpenIndex(openIndex === idx ? null : idx);
+  };
 
   return (
     <section className="w-full bg-blue-100 dark:bg-slate-900 py-16">
@@ -33,34 +39,33 @@ export default function Faq() {
               key={idx} 
               className="group bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden transition-all duration-200 hover:border-blue-500"
             >
-              <details className="p-6">
-                <summary className="flex justify-between items-center cursor-pointer list-none">
+              <div className="p-6">
+                <div 
+                  className="flex justify-between items-center cursor-pointer"
+                  onClick={() => toggle(idx)}
+                >
                   <span className="text-lg font-medium text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
                     {faq.q}
                   </span>
                   <svg 
-                    className="w-5 h-5 text-gray-500 dark:text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-transform duration-200"
+                    className={`w-5 h-5 text-white transition-transform duration-200 ${openIndex === idx ? 'rotate-180' : ''}`}
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
-                </summary>
-                <p className="mt-4 text-gray-600 dark:text-slate-300">
-                  {faq.a}
-                </p>
-              </details>
+                </div>
+                {openIndex === idx && (
+                  <p className="mt-4 text-gray-600 dark:text-slate-300">
+                    {faq.a}
+                  </p>
+                )}
+              </div>
             </div>
           ))}
         </div>
       </div>
-
-      <style jsx>{`
-        details[open] > summary > svg {
-          transform: rotate(180deg);
-        }
-      `}</style>
     </section>
-  )
+  );
 }
