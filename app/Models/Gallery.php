@@ -9,7 +9,8 @@ class Gallery extends Model
 {
     use HasFactory;
 
-    protected $table = "galleries";
+    protected $table = 'galleries';
+
     protected $fillable = [
         'user_id',
         'category_id',
@@ -17,6 +18,7 @@ class Gallery extends Model
         'image',
     ];
 
+    // relasi
     public function user()
     {
         return $this->belongsTo(User::class);

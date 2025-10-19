@@ -13,9 +13,18 @@ class TeacherController extends Controller
     public function index()
     {
         $teachers = Teacher::with('role')->get();
+
+        $teachers->transform(function ($t) {
+            if ($t->image) {
+                $t->image = 'data:image/jpeg;base64,' . base64_encode($t->image);
+            } else {
+                $t->image = null;
+            }
+            return $t;
+        });
+
         return response()->json($teachers);
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -29,18 +38,21 @@ class TeacherController extends Controller
             'rate' => 'nullable|numeric|min:0|max:5'
         ]);
 
-        $imagePath = null;
+        $imageData = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('teachers', 'public');
+            $imageData = file_get_contents($request->file('image')->getRealPath());
         }
 
         $teacher = Teacher::create([
             'role_id' => $request->role_id,
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $imagePath,
+            'image' => $imageData,
             'rate' => $request->rate
         ]);
+
+        // jangan kirim binary ke response JSON
+        $teacher->makeHidden(['image']);
 
         return response()->json([
             'message' => 'Teacher created successfully',
@@ -48,12 +60,18 @@ class TeacherController extends Controller
         ], 201);
     }
 
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         $teacher = Teacher::with('role')->findOrFail($id);
+
+        if ($teacher->image) {
+            $teacher->image = 'data:image/jpeg;base64,' . base64_encode($teacher->image);
+        }
+
         return response()->json($teacher);
     }
 
@@ -72,24 +90,27 @@ class TeacherController extends Controller
             'rate' => 'nullable|numeric|min:0|max:5'
         ]);
 
-        $imagePath = $teacher->image;
+        $imageData = $teacher->image;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('teachers', 'public');
+            $imageData = file_get_contents($request->file('image')->getRealPath());
         }
 
         $teacher->update([
             'role_id' => $request->role_id ?? $teacher->role_id,
             'name' => $request->name ?? $teacher->name,
             'description' => $request->description ?? $teacher->description,
-            'image' => $imagePath,
+            'image' => $imageData,
             'rate' => $request->rate ?? $teacher->rate
         ]);
+
+        $teacher->makeHidden(['image']);
 
         return response()->json([
             'message' => 'Teacher updated successfully',
             'data' => $teacher
         ]);
     }
+
 
     /**
      * Remove the specified resource from storage.

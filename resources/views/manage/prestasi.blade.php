@@ -78,8 +78,14 @@
                 <form @submit.prevent="saveAchievement">
                     <div class="mb-3">
                         <label class="block mb-1">Judul Prestasi</label>
-                        <input type="text" x-model="form.title"
+                        <input type="text" x-model="form.title" @input="generateSlug"
                             class="w-full rounded p-2 bg-gray-800 border border-gray-700">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="block mb-1">Slug</label>
+                        <input type="text" x-model="form.slug" readonly
+                            class="w-full rounded p-2 bg-gray-700 border border-gray-600 text-gray-300 cursor-not-allowed">
                     </div>
 
                     <div class="mb-3">
@@ -111,8 +117,9 @@
 
                     <div class="mb-3">
                         <label class="block mb-1">Tanggal</label>
-                        <input type="date" x-model="form.date"
-                            class="w-full rounded p-2 bg-gray-800 border border-gray-700">
+                        <input type="text" id="datepicker" x-model="form.date"
+                            class="w-full rounded p-2 text-dark bg-gray-800 border border-gray-700 focus:ring focus:ring-green-500"
+                            placeholder="Pilih tanggal" readonly>
                     </div>
 
                     <div class="mb-3">
@@ -145,6 +152,7 @@
                 form: {
                     id: null,
                     title: '',
+                    slug: '',
                     excerpt: '',
                     description: '',
                     rank: '',
@@ -156,6 +164,16 @@
                 async init() {
                     await this.loadAchievements();
                     await this.loadCategories();
+                    const localeID = flatpickr.l10ns.id || flatpickr.l10ns.default;
+
+                    flatpickr("#datepicker", {
+                        dateFormat: "Y-m-d",
+                        altInput: true,
+                        altFormat: "d F Y",
+                        locale: localeID,
+                        disableMobile: true,
+                        position: "above",
+                    });
                 },
 
                 async loadAchievements() {
@@ -191,6 +209,15 @@
                 openModal() {
                     this.resetForm();
                     this.showModal = true;
+                },
+
+                generateSlug() {
+                    this.form.slug = this.form.title
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[^a-z0-9\s-]/g, '')
+                        .replace(/[\s-]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
                 },
 
                 closeModal() {
@@ -292,7 +319,8 @@
 
                         // Tambahkan semua field non-file
                         Object.entries(this.form).forEach(([key, value]) => {
-                            if (key !== 'image' && value !== null && value !== undefined && value !== '') {
+                            if (key !== 'image' && key !== 'slug' && value !== null && value !== undefined &&
+                                value !== '') {
                                 formData.append(key, value);
                             }
                         });

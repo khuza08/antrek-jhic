@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Achievement extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $fillable = [
         'user_id',
@@ -53,6 +54,19 @@ class Achievement extends Model
         'image',
         'date'
     ];
+
+    /**
+     * Generate slug dari title.
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title',
+                'onUpdate' => true,
+            ]
+        ];
+    }
 
     public function getImageAttribute($value)
     {

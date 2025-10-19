@@ -40,8 +40,8 @@
                                     <td class="py-2 px-3" x-text="gal.title"></td>
                                     <td class="py-2 px-3" x-text="gal.category?.name || '-'"></td>
                                     <td class="py-2 px-3">
-                                        <img :src="`/storage/${gal.image}`" alt="img"
-                                            class="w-20 h-14 object-cover rounded" x-show="gal.image">
+                                        <img :src="gal.image" alt="img" class="w-20 h-14 object-cover rounded"
+                                            x-show="gal.image">
                                     </td>
                                     <td class="py-2 px-3" x-text="new Date(gal.created_at).toLocaleString()"></td>
                                     <td class="py-2 px-3 space-x-2">
@@ -145,30 +145,89 @@
                 previewImage(event) {
                     const file = event.target.files[0];
                     if (file) {
-                        this.form.image = file;
-                        this.preview = URL.createObjectURL(file);
+                        this.compressImage(file).then((compressedFile) => {
+                            this.form.image = compressedFile;
+                            this.preview = URL.createObjectURL(compressedFile);
+                        });
                     }
                 },
+
+                async compressImage(file) {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.src = e.target.result;
+
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+
+                                // 🔧 Maksimum ukuran gambar (misal 1280px)
+                                const maxWidth = 1280;
+                                const maxHeight = 1280;
+
+                                let width = img.width;
+                                let height = img.height;
+
+                                // Skala proporsional
+                                if (width > height && width > maxWidth) {
+                                    height *= maxWidth / width;
+                                    width = maxWidth;
+                                } else if (height > maxHeight) {
+                                    width *= maxHeight / height;
+                                    height = maxHeight;
+                                }
+
+                                canvas.width = width;
+                                canvas.height = height;
+
+                                // Gambar ulang ke canvas
+                                ctx.drawImage(img, 0, 0, width, height);
+
+                                // 🔥 Kompres kualitas ke 0.6 (bisa ubah ke 0.3 untuk super kecil)
+                                canvas.toBlob(
+                                    (blob) => {
+                                        // Buat file baru hasil kompresi
+                                        const compressedFile = new File([blob], file.name, {
+                                            type: 'image/jpeg',
+                                            lastModified: Date.now(),
+                                        });
+                                        resolve(compressedFile);
+                                    },
+                                    'image/jpeg',
+                                    0.1 // kualitas (0.1 = super kecil, 1.0 = tanpa kompres)
+                                );
+                            };
+                        };
+                    });
+                },
+
 
                 editGallery(gal) {
                     this.form = {
                         id: gal.id,
                         title: gal.title,
                         category_id: gal.category_id,
-                        user_id: 1,
+                        user_id: 1, // atau gal.user_id jika ada
                         image: null
                     };
-                    this.preview = gal.image ? `/storage/${gal.image}` : '';
+                    // UBAH BAGIAN INI: Preview saat edit juga menggunakan Base64 dari API
+                    this.preview = gal.image || '';
                     this.showModal = true;
                 },
 
                 async saveGallery() {
                     try {
                         const formData = new FormData();
+                        // Loop ini sudah benar, akan mengirim file jika ada
                         for (const key in this.form) {
                             if (this.form[key]) formData.append(key, this.form[key]);
                         }
 
+                        // Method spoofing untuk update sudah benar
                         const url = this.form.id ?
                             `/api/galleries/${this.form.id}?_method=PUT` :
                             '/api/galleries';

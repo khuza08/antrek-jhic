@@ -45,7 +45,7 @@
                                     <td class="py-2 px-3" x-text="t.rate ?? '-'"></td>
                                     <td class="py-2 px-3">
                                         <template x-if="t.image">
-                                            <img :src="`/storage/${t.image}`" alt=""
+                                            <img :src="t.image" alt=""
                                                 class="w-10 h-10 rounded-full object-cover">
                                         </template>
                                         <template x-if="!t.image">
@@ -78,7 +78,7 @@
         </div>
 
         <!-- Modal -->
-        <div x-show="modalOpen" class="fixed inset-0 bg-black/60 z-40 flex justify-center items-start overflow-y-auto p-4"
+        <div x-show="modalOpen" class="fixed inset-0 bg-black/60 z-50 flex justify-center items-start overflow-y-auto p-4"
             x-transition>
             <div class="bg-gray-900 p-6 rounded-lg w-full max-w-lg text-white max-h-[90vh] overflow-y-auto">
                 <h2 class="text-lg font-semibold mb-4" x-text="modalMode === 'create' ? 'Tambah Guru' : 'Edit Guru'"></h2>
@@ -162,8 +162,51 @@
                     }
                 },
 
-                handleFile(e) {
-                    this.form.image = e.target.files[0];
+                async handleFile(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const compressedFile = await this.compressImage(file,
+                        0.1); // bisa ubah 0.6 -> 0.4 kalau mau lebih kecil
+                    this.form.image = compressedFile;
+                },
+
+                async compressImage(file, quality = 0.6) {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.src = event.target.result;
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+
+                                // Maksimal lebar gambar agar tidak terlalu besar
+                                const MAX_WIDTH = 800;
+                                const scale = Math.min(1, MAX_WIDTH / img.width);
+                                const width = img.width * scale;
+                                const height = img.height * scale;
+
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+
+                                // Simpan dalam format JPEG terkompres
+                                canvas.toBlob(
+                                    (blob) => {
+                                        const compressedFile = new File([blob], file.name, {
+                                            type: 'image/jpeg',
+                                            lastModified: Date.now()
+                                        });
+                                        resolve(compressedFile);
+                                    },
+                                    'image/jpeg',
+                                    quality
+                                );
+                            };
+                        };
+                    });
                 },
 
                 openModal(mode, teacher = null) {

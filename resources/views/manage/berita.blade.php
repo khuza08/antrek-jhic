@@ -218,35 +218,69 @@
                     }, 500);
                 },
 
-                handleImageUpload(event) {
+                async handleImageUpload(event) {
                     const file = event.target.files[0];
                     if (!file) return;
 
-                    // Validasi tipe file
                     if (!file.type.startsWith('image/')) {
                         this.showAlert('File harus berupa gambar!', 'error');
                         event.target.value = '';
                         return;
                     }
 
-                    const maxSize = 5 * 1024 * 1024; // 5MB
+                    const maxSize = 5 * 1024 * 1024;
                     if (file.size > maxSize) {
                         this.showAlert('File terlalu besar! Maksimal 5MB', 'error');
                         event.target.value = '';
                         return;
                     }
 
-                    // Convert to base64
+                    // 🔽 Kompres gambar terlebih dahulu
+                    const compressedFile = await this.compressImage(file, 0.1); // ubah 0.6 → 0.4 jika mau lebih kecil
+
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        this.imageBase64 = e.target.result; // Include data:image/...;base64,
+                        this.imageBase64 = e.target.result;
                         this.imagePreview = e.target.result;
-                        console.log('Image loaded:', file.name, file.size, 'bytes');
                     };
-                    reader.onerror = () => {
-                        this.showAlert('Gagal membaca file gambar!', 'error');
-                    };
-                    reader.readAsDataURL(file);
+                    reader.readAsDataURL(compressedFile);
+                },
+
+                async compressImage(file, quality = 0.6) {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.src = event.target.result;
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+
+                                const MAX_WIDTH = 800;
+                                const scale = Math.min(1, MAX_WIDTH / img.width);
+                                const width = img.width * scale;
+                                const height = img.height * scale;
+
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+
+                                canvas.toBlob(
+                                    (blob) => {
+                                        resolve(
+                                            new File([blob], file.name, {
+                                                type: 'image/jpeg',
+                                                lastModified: Date.now()
+                                            })
+                                        );
+                                    },
+                                    'image/jpeg',
+                                    quality
+                                );
+                            };
+                        };
+                    });
                 },
 
                 showAlert(message, type) {
