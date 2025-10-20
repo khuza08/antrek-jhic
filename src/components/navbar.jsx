@@ -114,12 +114,7 @@ export default function Header() {
                 >
                   Visi & Misi
                 </button>
-                <Link
-                  to="/tentang/struktur"
-                  className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
-                >
-                  Struktur Organisasi
-                </Link>
+
               </div>
             </div>
 
