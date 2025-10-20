@@ -1,42 +1,50 @@
 [
   {
-    "nama": "Budi Santoso",
+    "id": 1,
+    "nama": "Dr. Ahmad Fauzi",
+    "jabatan": "Kepala Sekolah",
+    "photo": ""
+  },
+  {
+    "id": 2,
+    "nama": "Siti Nurhaliza",
+    "jabatan": "Guru Bahasa Indonesia",
+    "photo": ""
+  },
+  {
+    "id": 3,
+    "nama": "Rudi Hermawan",
     "jabatan": "Guru Matematika",
     "photo": ""
   },
   {
-    "nama": "Sari Dewi",
-    "jabatan": "Guru Bahasa Indonesia",
+    "id": 4,
+    "nama": "Dewi Lestari",
+    "jabatan": "Guru IPA",
     "photo": ""
   },
-    {
-    "nama": "Budi Santoso",
-    "jabatan": "Guru Matematika",
+  {
+    "id": 5,
+    "nama": "Bambang Sutrisno",
+    "jabatan": "Guru IPS",
     "photo": ""
   },
-    {
-    "nama": "Budi Santoso",
-    "jabatan": "Guru Matematika",
+  {
+    "id": 6,
+    "nama": "Anita Wijaya",
+    "jabatan": "Guru Bahasa Inggris",
     "photo": ""
   },
-    {
-    "nama": "Budi Santoso",
-    "jabatan": "Guru Matematika",
+  {
+    "id": 7,
+    "nama": "Fajar Nugroho",
+    "jabatan": "Guru TIK",
     "photo": ""
   },
-    {
-    "nama": "Budi Santoso",
-    "jabatan": "Guru Matematika",
-    "photo": ""
-  },
-      {
-    "nama": "Budi Santoso",
-    "jabatan": "Guru Matematika",
-    "photo": ""
-  },
-      {
-    "nama": "Budi Santoso",
-    "jabatan": "Guru Matematika",
+  {
+    "id": 8,
+    "nama": "Lina Marlina",
+    "jabatan": "Guru Seni Budaya",
     "photo": ""
   }
 ]
