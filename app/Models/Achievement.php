@@ -64,6 +64,7 @@ class Achievement extends Model
             'slug' => [
                 'source' => 'title',
                 'onUpdate' => true,
+                'unique' => true,
             ]
         ];
     }
