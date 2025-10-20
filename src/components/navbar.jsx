@@ -1,16 +1,22 @@
 // src/components/Header.jsx
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logoLight from '../assets/images/logo_embed.png';
 import logoDark from '../assets/images/logo_embed_dark.png';
 import ContactFormModal from './ContactFormModal';
-import VisiMisiModal from './VisiMisiModal'; // <-- NEW IMPORT
+import VisiMisiModal from './VisiMisiModal';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
-  const [showVisiMisi, setShowVisiMisi] = useState(false); // <-- NEW STATE
+  const [showVisiMisi, setShowVisiMisi] = useState(false);
+  const [mobileDropdowns, setMobileDropdowns] = useState({
+    tentang: false,
+    guru: false,
+  });
+
+  const mobileMenuRef = useRef(null);
 
   const [logoSrc, setLogoSrc] = useState(() => {
     if (typeof window === 'undefined') return logoLight;
@@ -18,7 +24,7 @@ export default function Header() {
     return prefersDark ? logoLight : logoDark;
   });
 
-  // Lock scroll when any modal or mobile menu is open
+  // Lock scroll
   useEffect(() => {
     document.body.style.overflow = menuOpen || showContactForm || showVisiMisi ? 'hidden' : 'auto';
     return () => {
@@ -26,20 +32,35 @@ export default function Header() {
     };
   }, [menuOpen, showContactForm, showVisiMisi]);
 
-  // Close modals on Escape
+  // Escape key
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Escape') {
       if (showContactForm) setShowContactForm(false);
       if (showVisiMisi) setShowVisiMisi(false);
+      setMenuOpen(false);
+      setMobileDropdowns({ tentang: false, guru: false });
     }
   }, [showContactForm, showVisiMisi]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+        setMobileDropdowns({ tentang: false, guru: false });
+      }
+    };
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [menuOpen]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -49,13 +70,29 @@ export default function Header() {
 
   const openContactForm = () => setShowContactForm(true);
 
+  const toggleMobileDropdown = (name) => {
+    setMobileDropdowns((prev) => ({
+      ...Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {}),
+      [name]: !prev[name],
+    }));
+  };
+
+  const closeAllMobileDropdowns = () => {
+    setMobileDropdowns({ tentang: false, guru: false });
+  };
+
+  const closeMobileMenu = () => {
+    setMenuOpen(false);
+    closeAllMobileDropdowns();
+  };
+
   return (
     <>
-      {/* Mobile menu overlay */}
+      {/* Mobile overlay */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-lg z-40 md:hidden"
-          onClick={() => setMenuOpen(false)}
+          onClick={closeMobileMenu}
         />
       )}
 
@@ -69,7 +106,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto flex items-center justify-center py-4 px-6 relative">
           {/* Logo */}
           <div className="absolute left-6">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
               <img
                 src={logoSrc}
                 alt="SMK Antartika 2 Sidoarjo"
@@ -84,7 +121,7 @@ export default function Header() {
               Beranda
             </Link>
 
-            {/* Tentang Dropdown */}
+            {/* Tentang Dropdown - Desktop */}
             <div className="relative group">
               <button className="flex items-center hover:text-blue-600 dark:hover:text-blue-300 transition">
                 Tentang
@@ -104,7 +141,6 @@ export default function Header() {
                 >
                   Sejarah
                 </Link>
-                {/* MODAL TRIGGER */}
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -114,11 +150,10 @@ export default function Header() {
                 >
                   Visi & Misi
                 </button>
-
               </div>
             </div>
 
-            {/* Guru Dropdown */}
+            {/* Guru Dropdown - Desktop */}
             <div className="relative group">
               <button className="flex items-center hover:text-blue-600 dark:hover:text-blue-300 transition">
                 Guru
@@ -168,7 +203,10 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <div className="absolute right-6 md:hidden">
             <button
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+                if (!menuOpen) closeAllMobileDropdowns();
+              }}
               className="focus:outline-none text-blue-700 dark:text-blue-400"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,42 +220,116 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu with Dropdowns */}
         <div
+          ref={mobileMenuRef}
           className={`md:hidden ${menuOpen ? 'block' : 'hidden'} bg-gradient-to-b from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 backdrop-blur-lg pb-4 relative z-50`}
         >
-          <div className="flex flex-col space-y-4 px-6 py-2 text-gray-900 dark:text-white">
-            {[
-              { to: '/', text: 'Beranda' },
-              { to: '/tentang', text: 'Tentang' },
-              { to: '/guru', text: 'Guru' },
-              { to: '/achievements', text: 'Prestasi' },
-              { to: '/gallery', text: 'Galeri' },
-            ].map((item, idx) => (
-              <Link
-                key={idx}
-                to={item.to}
-                className="hover:text-blue-600 dark:hover:text-blue-300 transition py-2 border-b border-blue-200 dark:border-white/30"
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.text}
-              </Link>
-            ))}
-
-            {/* Mobile: Visi & Misi button (optional) */}
-            <button
-              onClick={() => {
-                setMenuOpen(false);
-                setShowVisiMisi(true);
-              }}
-              className="text-left py-2 border-b border-blue-200 dark:border-white/30 hover:text-blue-600 dark:hover:text-blue-300"
+          <div className="flex flex-col space-y-1 px-6 py-2 text-gray-900 dark:text-white">
+            <Link
+              to="/"
+              className="py-3 hover:text-blue-600 dark:hover:text-blue-300 transition border-b border-blue-200 dark:border-white/30"
+              onClick={closeMobileMenu}
             >
-              Visi & Misi
-            </button>
+              Beranda
+            </Link>
+
+            {/* Mobile Tentang Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => toggleMobileDropdown('tentang')}
+                className="flex w-full justify-between items-center py-3 hover:text-blue-600 dark:hover:text-blue-300 transition border-b border-blue-200 dark:border-white/30"
+              >
+                Tentang
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileDropdowns.tentang ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {mobileDropdowns.tentang && (
+                <div className="ml-4 mt-1 space-y-2 border-l-2 border-blue-300 dark:border-blue-500 pl-3">
+                  <Link
+                    to="/tentang/sejarah"
+                    className="block py-2 hover:text-blue-600 dark:hover:text-blue-300 transition"
+                    onClick={closeMobileMenu}
+                  >
+                    Sejarah
+                  </Link>
+                  <button
+                    onClick={() => {
+                      closeMobileMenu();
+                      setShowVisiMisi(true);
+                    }}
+                    className="block text-left py-2 hover:text-blue-600 dark:hover:text-blue-300 transition"
+                  >
+                    Visi & Misi
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Guru Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => toggleMobileDropdown('guru')}
+                className="flex w-full justify-between items-center py-3 hover:text-blue-600 dark:hover:text-blue-300 transition border-b border-blue-200 dark:border-white/30"
+              >
+                Guru
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileDropdowns.guru ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {mobileDropdowns.guru && (
+                <div className="ml-4 mt-1 space-y-2 border-l-2 border-blue-300 dark:border-blue-500 pl-3">
+                  <Link
+                    to="/guru"
+                    className="block py-2 hover:text-blue-600 dark:hover:text-blue-300 transition"
+                    onClick={closeMobileMenu}
+                  >
+                    Daftar Guru
+                  </Link>
+                  <Link
+                    to="/guru/staf"
+                    className="block py-2 hover:text-blue-600 dark:hover:text-blue-300 transition"
+                    onClick={closeMobileMenu}
+                  >
+                    Staf Pengajar
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <Link
+              to="/achievements"
+              className="py-3 hover:text-blue-600 dark:hover:text-blue-300 transition border-b border-blue-200 dark:border-white/30"
+              onClick={closeMobileMenu}
+            >
+              Prestasi
+            </Link>
+            <Link
+              to="/gallery"
+              className="py-3 hover:text-blue-600 dark:hover:text-blue-300 transition border-b border-blue-200 dark:border-white/30"
+              onClick={closeMobileMenu}
+            >
+              Galeri
+            </Link>
 
             <button
               onClick={() => {
-                setMenuOpen(false);
+                closeMobileMenu();
                 openContactForm();
               }}
               className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition text-center mt-2"
@@ -229,14 +341,8 @@ export default function Header() {
       </header>
 
       {/* Modals */}
-      <ContactFormModal
-        isOpen={showContactForm}
-        onClose={() => setShowContactForm(false)}
-      />
-      <VisiMisiModal
-        isOpen={showVisiMisi}
-        onClose={() => setShowVisiMisi(false)}
-      />
+      <ContactFormModal isOpen={showContactForm} onClose={() => setShowContactForm(false)} />
+      <VisiMisiModal isOpen={showVisiMisi} onClose={() => setShowVisiMisi(false)} />
     </>
   );
 }
