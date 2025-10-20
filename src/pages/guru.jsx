@@ -1,33 +1,37 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from "react";
 
 export default function Guru() {
   const [gurus, setGurus] = useState([]);
   const [majors, setMajors] = useState([]);
-  const [selectedMajor, setSelectedMajor] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [selectedMajor, setSelectedMajor] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [tempMajor, setTempMajor] = useState('all'); // for modal
+  const [tempMajor, setTempMajor] = useState("all"); // for modal
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchGurus = async () => {
       try {
-        const res = await fetch('/src/data/guru.json');
-        if (!res.ok) throw new Error('Failed to load data');
+        const res = await fetch("http://localhost:8000/api/teachers");
+        if (!res.ok) throw new Error("Failed to load data");
         const rawData = await res.json();
 
-        const processed = rawData.map(guru => ({
-          ...guru,
-          foto: guru.photo || `https://i.pravatar.cc/400?u=${guru.id}`,
+        const processed = rawData.map((teacher) => ({
+          id: teacher.id,
+          nama: teacher.name,
+          jabatan: teacher.role?.role_name || "Tidak Diketahui",
+          foto: teacher.image || `https://i.pravatar.cc/400?u=${teacher.id}`,
+          description: teacher.description,
+          rate: teacher.rate,
         }));
 
         setGurus(processed);
 
-        const uniqueMajors = [...new Set(
-          processed.map(g => g.jabatan).filter(Boolean)
-        )];
+        const uniqueMajors = [
+          ...new Set(processed.map((g) => g.jabatan).filter(Boolean)),
+        ];
         setMajors(uniqueMajors);
       } catch (err) {
         setError(err.message);
@@ -40,9 +44,12 @@ export default function Guru() {
   }, []);
 
   const filteredGurus = useMemo(() => {
-    return gurus.filter(guru => {
-      const matchesMajor = selectedMajor === 'all' || guru.jabatan === selectedMajor;
-      const matchesSearch = guru.nama.toLowerCase().includes(searchQuery.toLowerCase());
+    return gurus.filter((guru) => {
+      const matchesMajor =
+        selectedMajor === "all" || guru.jabatan === selectedMajor;
+      const matchesSearch = guru.nama
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
       return matchesMajor && matchesSearch;
     });
   }, [gurus, selectedMajor, searchQuery]);
@@ -53,19 +60,21 @@ export default function Guru() {
   };
 
   const resetFilters = () => {
-    setTempMajor('all');
-    setSelectedMajor('all');
-    setSearchQuery('');
+    setTempMajor("all");
+    setSelectedMajor("all");
+    setSearchQuery("");
     setIsFilterOpen(false);
   };
 
   if (loading) return <div className="p-6 text-center">Loading...</div>;
-  if (error) return <div className="p-6 text-center text-red-500">Error: {error}</div>;
+  if (error)
+    return <div className="p-6 text-center text-red-500">Error: {error}</div>;
 
   const totalResults = filteredGurus.length;
-  const showing = totalResults > 0
-    ? `Showing 1-${Math.min(12, totalResults)} of ${totalResults} results`
-    : 'Showing 0 of 0 results';
+  const showing =
+    totalResults > 0
+      ? `Showing 1-${Math.min(12, totalResults)} of ${totalResults} results`
+      : "Showing 0 of 0 results";
 
   return (
     <div className="py-12 px-18 relative w-full bg-gradient-to-b from-blue-100 to-white dark:from-gray-800 dark:to-gray-900 min-h-screen pb-8">
@@ -74,28 +83,50 @@ export default function Guru() {
         <div className=" px-4 sm:px-8 py-3 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl shadow-sm">
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => setViewMode('grid')}
+              onClick={() => setViewMode("grid")}
               className={`font-medium px-4 py-2 rounded-full flex items-center gap-1 transition-colors ${
-                viewMode === 'grid'
-                  ? 'bg-white text-indigo-600 shadow-sm'
-                  : 'bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                viewMode === "grid"
+                  ? "bg-white text-indigo-600 shadow-sm"
+                  : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                />
               </svg>
               Grid
             </button>
             <button
-              onClick={() => setViewMode('list')}
+              onClick={() => setViewMode("list")}
               className={`font-medium px-4 py-2 rounded-full flex items-center gap-1 transition-colors ${
-                viewMode === 'list'
-                  ? 'bg-white text-indigo-600 shadow-sm'
-                  : 'bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                viewMode === "list"
+                  ? "bg-white text-indigo-600 shadow-sm"
+                  : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
               List
             </button>
@@ -121,7 +152,12 @@ export default function Guru() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
             </div>
 
@@ -132,9 +168,25 @@ export default function Guru() {
               }}
               className="bg-white text-gray-800 font-medium px-4 py-2 rounded-full shadow-sm flex items-center gap-1 hover:bg-gray-100 transition-colors"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.586.894l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-6-6m6 6l-6 6m6-6v6" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.586.894l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-6-6m6 6l-6 6m6-6v6"
+                />
               </svg>
               Filter
             </button>
@@ -145,18 +197,22 @@ export default function Guru() {
         {isFilterOpen && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6">
-              <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Filter by Major</h3>
+              <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">
+                Filter by Major
+              </h3>
 
               <div className="space-y-3 mb-6">
                 <label className="flex items-center">
                   <input
                     type="radio"
                     name="major"
-                    checked={tempMajor === 'all'}
-                    onChange={() => setTempMajor('all')}
+                    checked={tempMajor === "all"}
+                    onChange={() => setTempMajor("all")}
                     className="mr-2"
                   />
-                  <span className="text-gray-700 dark:text-gray-300">All Majors</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    All Majors
+                  </span>
                 </label>
                 {majors.map((major) => (
                   <label key={major} className="flex items-center">
@@ -167,7 +223,9 @@ export default function Guru() {
                       onChange={() => setTempMajor(major)}
                       className="mr-2"
                     />
-                    <span className="text-gray-700 dark:text-gray-300">{major}</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      {major}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -203,7 +261,7 @@ export default function Guru() {
             <p className="text-center text-gray-600 dark:text-gray-400 mt-8">
               Tidak ada guru yang ditemukan.
             </p>
-          ) : viewMode === 'grid' ? (
+          ) : viewMode === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredGurus.map((guru) => (
                 <div
@@ -216,7 +274,9 @@ export default function Guru() {
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                    <h3 className="font-bold text-white text-lg truncate">{guru.nama}</h3>
+                    <h3 className="font-bold text-white text-lg truncate">
+                      {guru.nama}
+                    </h3>
                     <p className="text-sm text-gray-200 mt-1">{guru.jabatan}</p>
                   </div>
                 </div>
@@ -236,8 +296,12 @@ export default function Guru() {
                     className="w-24 h-24 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
                   />
                   <div className="text-center sm:text-left">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{guru.nama}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 mt-1">{guru.jabatan}</p>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                      {guru.nama}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">
+                      {guru.jabatan}
+                    </p>
                   </div>
                 </div>
               ))}
