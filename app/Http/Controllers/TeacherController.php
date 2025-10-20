@@ -12,9 +12,13 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = Teacher::with('role')->get();
+        $teachers = Teacher::with('role')
+            ->whereHas('role', function ($query) {
+                $query->where('name', '!=', 'Admin');
+            })
+            ->get();
 
-        $teachers->transform(function ($t) {
+        $teachers->transform(function (\App\Models\Teacher $t) {
             if ($t->image) {
                 $t->image = 'data:image/jpeg;base64,' . base64_encode($t->image);
             } else {

@@ -32,6 +32,7 @@ class News extends Model
             'slug' => [
                 'source' => 'title',
                 'onUpdate' => true,
+                'unique' => true,
             ]
         ];
     }

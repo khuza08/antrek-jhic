@@ -20,14 +20,13 @@
                     <table class="w-full text-left border-collapse">
                         <thead class="border-b border-gray-600">
                             <tr>
-                                <th class="py-2 px-3">No</th>
-                                <th class="py-2 px-3">Nama</th>
-                                <th class="py-2 px-3">Deskripsi</th>
-                                <th class="py-2 px-3">Rate</th>
-                                <th class="py-2 px-3">Foto</th>
-                                <th class="py-2 px-3">Role</th>
-                                <th class="py-2 px-3">Dibuat</th>
-                                <th class="py-2 px-3">Aksi</th>
+                                <th class="py-2 px-4">No</th>
+                                <th class="py-2 px-4">Nama</th>
+                                <th class="py-2 px-4">Role</th>
+                                <th class="py-2 px-4">Deskripsi</th>
+                                <th class="py-2 px-4">Rate</th>
+                                <th class="py-2 px-4">Foto</th>
+                                <th class="py-2 px-4">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,14 +38,14 @@
 
                             <template x-for="(t, i) in teachers" :key="t.id">
                                 <tr class="border-b border-gray-700 hover:bg-gray-700">
-                                    <td class="py-2 px-3" x-text="i + 1"></td>
-                                    <td class="py-2 px-3" x-text="t.name"></td>
-                                    <td class="py-2 px-3" x-text="t.description ?? '-'"></td>
-                                    <td class="py-2 px-3" x-text="t.rate ?? '-'"></td>
-                                    <td class="py-2 px-3">
+                                    <td class="py-2 px-4" x-text="i + 1"></td>
+                                    <td class="py-2 px-4" x-text="t.name"></td>
+                                    <td class="py-2 px-4" x-text="t.role?.role_name ?? '-'"></td>
+                                    <td class="py-2 px-4" x-text="t.description ?? '-'"></td>
+                                    <td class="py-2 px-4" x-text="t.rate ?? '-'"></td>
+                                    <td class="py-2 px-4">
                                         <template x-if="t.image">
-                                            <img :src="t.image" alt=""
-                                                class="w-10 h-10 rounded-full object-cover">
+                                            <img :src="t.image" alt="" class="w-10 h-10 object-cover">
                                         </template>
                                         <template x-if="!t.image">
                                             <div
@@ -54,11 +53,9 @@
                                                 N/A</div>
                                         </template>
                                     </td>
-                                    <td class="py-2 px-3" x-text="t.role?.role_name ?? '-'"></td>
-                                    <td class="py-2 px-3" x-text="new Date(t.created_at).toLocaleString()"></td>
                                     <td class="py-2 px-3">
                                         <div
-                                            class="flex flex-col sm:flex-row justify-between sm:justify-start gap-2 sm:gap-1">
+                                            class="flex flex-col sm:flex-row justify-between sm:justify-start gap-2 sm:gap-0">
                                             <button @click="openModal('edit', t)"
                                                 class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 text-sm sm:text-base">
                                                 Edit
