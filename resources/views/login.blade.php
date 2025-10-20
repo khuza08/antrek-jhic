@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem Informasi Sekolah</title>
+    <title>Login Page Alderlake</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-900 text-gray-100 flex items-center justify-center min-h-screen">
 
     <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-lg p-8">
-        <h1 class="text-2xl font-bold text-center mb-6 text-white">Selamat Datang 👋</h1>
+        <h1 class="text-2xl font-bold text-center mb-6 text-white">Selamat Datang</h1>
         <p class="text-center text-gray-400 mb-5 text-sm">Silakan login untuk melanjutkan ke dashboard admin</p>
 
         <!-- Alert untuk pesan sukses/gagal -->

@@ -27,7 +27,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 | Protected Routes (Hanya bisa diakses jika sudah login)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
