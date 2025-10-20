@@ -4,8 +4,7 @@ export default function Kepsek() {
   return (
     <section className="flex flex-col md:flex-row bg-blue-100 dark:bg-slate-900 px-6 md:px-12 gap-y-6 md:gap-x-8">
       {/* Kolom kiri — no AOS */}
-      <div className="py-12 pl-24 w-full md:w-1/2 h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]"
-      data-aos="fade-left">
+      <div className="py-12 pl-4 sm:pl-8 md:pl-24 w-full md:w-1/2 h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]">
         <img
           src={kepsekImage}
           alt="Kepala Sekolah"
@@ -31,7 +30,7 @@ export default function Kepsek() {
         </div>
 
         <p
-          className="pr-24 text-black/50 dark:text-white/70 text-base md:text-lg tracking-tight leading-tight"
+          className="pr-4 sm:pr-8 md:pr-24 text-black/50 dark:text-white/70 text-base md:text-lg tracking-tight leading-tight text-justify"
           data-aos="fade-up"
           data-aos-delay="100"
         >

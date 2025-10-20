@@ -33,7 +33,7 @@ export default function Gallery() {
           return { ...img, src: "" };
         });
 
-        setImagesData(converted);
+        setImagesData(converted); n
       } catch (err) {
         console.error("Error fetching images:", err);
       }
