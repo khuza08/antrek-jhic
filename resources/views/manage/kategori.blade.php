@@ -68,6 +68,7 @@
                 <h2 class="text-xl font-semibold mb-4" x-text="isEdit ? 'Edit Kategori' : 'Tambah Kategori'"></h2>
 
                 <form @submit.prevent="saveCategory">
+                    @csrf
                     <div class="mb-3">
                         <label class="block mb-1">Nama Kategori</label>
                         <input type="text" x-model="form.name"

@@ -65,6 +65,7 @@
                 <h2 class="text-xl font-semibold mb-4" x-text="isEdit ? 'Edit Jurusan' : 'Tambah Jurusan'"></h2>
 
                 <form @submit.prevent="saveMajor">
+                    @csrf
                     <!-- Nama Jurusan -->
                     <div class="mb-3">
                         <label class="block mb-1">Nama Jurusan</label>

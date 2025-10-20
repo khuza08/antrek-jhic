@@ -65,6 +65,7 @@
                 <h2 class="text-xl font-semibold mb-4" x-text="form.id ? 'Edit Gambar' : 'Tambah Gambar'"></h2>
 
                 <form @submit.prevent="saveGallery">
+                    @csrf
                     <div class="mb-3">
                         <label class="block mb-1">Judul</label>
                         <input type="text" x-model="form.title"

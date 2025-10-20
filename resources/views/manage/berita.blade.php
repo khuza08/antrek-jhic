@@ -77,6 +77,7 @@
                 <h2 class="text-xl font-semibold mb-4" x-text="form.id ? 'Edit Berita' : 'Tambah Berita'"></h2>
 
                 <form @submit.prevent="saveNews">
+                    @csrf
                     <div class="mb-3">
                         <label class="block mb-1">Judul</label>
                         <input type="text" x-model="form.title" @input="generateSlug"

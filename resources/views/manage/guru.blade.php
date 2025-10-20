@@ -84,6 +84,7 @@
                 <h2 class="text-lg font-semibold mb-4" x-text="modalMode === 'create' ? 'Tambah Guru' : 'Edit Guru'"></h2>
 
                 <form @submit.prevent="saveTeacher" enctype="multipart/form-data">
+                    @csrf
                     <!-- Dropdown Role -->
                     <div class="mb-3">
                         <label class="block mb-1 text-sm">Role</label>

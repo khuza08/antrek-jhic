@@ -76,6 +76,7 @@
                 <h2 class="text-xl font-semibold mb-4" x-text="form.id ? 'Edit Prestasi' : 'Tambah Prestasi'"></h2>
 
                 <form @submit.prevent="saveAchievement">
+                    @csrf
                     <div class="mb-3">
                         <label class="block mb-1">Judul Prestasi</label>
                         <input type="text" x-model="form.title" @input="generateSlug"
