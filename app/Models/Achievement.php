@@ -64,7 +64,14 @@ class Achievement extends Model
             'slug' => [
                 'source' => 'title',
                 'onUpdate' => true,
+                'separator' => '-',
+                'method' => null,
+                'maxLength' => 255,
+                'maxLengthKeepWords' => true,
+                'slugEngineOptions' => [],
+                'reserved' => [],
                 'unique' => true,
+                'includeTrashed' => false,
             ]
         ];
     }
