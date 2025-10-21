@@ -7,7 +7,8 @@ export default function Guru() {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [tempMajor, setTempMajor] = useState("all"); 
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // 🔍 NEW
+  const [tempMajor, setTempMajor] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -66,21 +67,21 @@ export default function Guru() {
     setIsFilterOpen(false);
   };
 
-  if (loading) return <div className="p-6 text-center">Loading...</div>;
-  if (error)
-    return <div className="p-6 text-center text-red-500">Error: {error}</div>;
-
   const totalResults = filteredGurus.length;
   const showing =
     totalResults > 0
       ? `Showing 1-${Math.min(12, totalResults)} of ${totalResults} results`
       : "Showing 0 of 0 results";
 
+  if (loading) return <div className="p-6 text-center">Loading...</div>;
+  if (error)
+    return <div className="p-6 text-center text-red-500">Error: {error}</div>;
+
   return (
-    <div className="py-12 px-18 relative w-full bg-gradient-to-b from-blue-100 to-white dark:from-gray-800 dark:to-gray-900 min-h-screen pb-8">
+    <div className="py-12 px-4 sm:px-8 relative w-full bg-gradient-to-b from-blue-100 to-white dark:from-gray-800 dark:to-gray-900 min-h-screen pb-8">
       <div className="overflow-y-auto pt-16">
         {/* Header Bar */}
-        <div className=" px-4 sm:px-8 py-3 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl shadow-sm">
+        <div className="px-4 sm:px-8 py-3 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl shadow-sm">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setViewMode("grid")}
@@ -90,19 +91,8 @@ export default function Guru() {
                   : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
               Grid
             </button>
@@ -114,19 +104,8 @@ export default function Guru() {
                   : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
               List
             </button>
@@ -137,7 +116,8 @@ export default function Guru() {
           </p>
 
           <div className="flex items-center space-x-3 w-full sm:w-auto">
-            <div className="relative flex-grow max-w-md">
+            {/* 🔍 Desktop Search Bar — hidden on mobile */}
+            <div className="hidden sm:block relative flex-grow max-w-md">
               <input
                 type="text"
                 value={searchQuery}
@@ -152,14 +132,19 @@ export default function Guru() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
+
+            {/* 🔍 Mobile Search Icon — only on mobile */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="sm:hidden text-gray-800 dark:text-gray-200 p-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
 
             <button
               onClick={() => {
@@ -168,30 +153,36 @@ export default function Guru() {
               }}
               className="bg-white text-gray-800 font-medium px-4 py-2 rounded-full shadow-sm flex items-center gap-1 hover:bg-gray-100 transition-colors"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.586.894l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-6-6m6 6l-6 6m6-6v6"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.586.894l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-6-6m6 6l-6 6m6-6v6" />
               </svg>
               Filter
             </button>
           </div>
         </div>
+
+        {/* 🔍 Search Modal — only on mobile */}
+        {isSearchOpen && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 sm:hidden">
+            <div className="relative w-full max-w-md">
+              <input
+                type="text"
+                autoFocus
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari nama guru..."
+                className="w-full px-4 py-3 pr-12 rounded-full border border-gray-300 bg-white text-gray-900 shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                onClick={() => setIsSearchOpen(false)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Filter Modal */}
         {isFilterOpen && (
@@ -283,25 +274,20 @@ export default function Guru() {
               ))}
             </div>
           ) : (
-            // List View
             <div className="space-y-4">
               {filteredGurus.map((guru) => (
                 <div
                   key={guru.id}
-                  className="flex flex-col sm:flex-row items-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                  className="p-4 bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center gap-4"
                 >
                   <img
                     src={guru.foto}
                     alt={guru.nama}
-                    className="w-24 h-24 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
+                    className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
                   />
-                  <div className="text-center sm:text-left">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {guru.nama}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mt-1">
-                      {guru.jabatan}
-                    </p>
+                  <div className="text-left">
+                    <h3 className="text-xl font-bold text-white">{guru.nama}</h3>
+                    <p className="text-sm text-gray-400 mt-1">{guru.jabatan}</p>
                   </div>
                 </div>
               ))}
