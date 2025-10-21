@@ -6,6 +6,7 @@ export default function News() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
+
         const res = await fetch("https://bealderlake.jh-beon.cloud/api/news");
         console.log("Response status:", res.status);
         if (!res.ok) {
@@ -21,93 +22,114 @@ export default function News() {
   }, []);
 
   return (
-    <section className="w-full bg-gradient-to-b from-white to-blue-100 dark:from-slate-800 dark:to-slate-900 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+    <section className="w-full py-16 bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded-2xl">
+        <div className="text-center mb-2">
           <h2
-            className="text-3xl font-bold text-gray-800 dark:text-white mb-4"
-            data-aos="fade-in"
+            className="text-6xl font-bold text-gray-900 mb-4 pt-6"
+            style={{ fontFamily: "'Times New Roman', serif", fontWeight: 700 }}
           >
-            Berita{" "}
+            antrek
             <span
-              className="italic text-blue-600 dark:text-blue-400"
-              style={{ fontFamily: "'Instrument Serif', serif" }}
+              className="italic text-blue-500"
+              style={{ fontFamily: "'Times New Roman', serif", fontWeight: 400 }}
             >
-              Terbaru
+              news
             </span>
           </h2>
-          <p
-            className="text-gray-600 dark:text-slate-300 max-w-2xl mx-auto"
-            data-aos="fade-in"
-          >
-            Ikuti perkembangan terbaru dan cerita inspiratif dari komunitas kami
-          </p>
+          <div className="border-t border-gray-300 my-4"></div>
         </div>
 
-        {/* Grid Berita */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {news.length > 0 ? (
-            news.map((item, i) => <NewsCard key={i} item={item} />)
-          ) : (
-            <p className="text-center text-gray-600 dark:text-gray-300">
-              Memuat berita...
-            </p>
-          )}
-        </div>
+        {/* left 4, right scrollable*/}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* left 2x2 */}
+          <div className="lg:col-span-2">
+            <h3
+              className="font-bold text-lg text-gray-900 mb-6"
+              style={{ fontFamily: "'Georgia', serif" }}
+            >
+              Latest News
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {news.length >= 4 ? (
+                news.slice(0, 4).map((item, i) => (
+                  <div key={i} className="border-b border-gray-200 pb-6 last:border-b-0">
+                    <div className="mb-4">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-48 object-cover rounded-md"
+                      />
+                    </div>
+                    <h3
+                      className="text-xl font-bold text-gray-900 mb-2 leading-tight"
+                      style={{ fontFamily: "'Georgia', serif", fontWeight: 700 }}
+                    >
+                      {item.title}
+                    </h3>
+                    <p
+                      className="text-gray-700 mb-3 text-sm"
+                      style={{ fontFamily: "'Georgia', serif" }}
+                    >
+                      {item.summary}
+                    </p>
+                    <p className="text-xs text-gray-500">{item.readTime} MIN READ</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500 col-span-2">Memuat berita...</p>
+              )}
+            </div>
+          </div>
 
-        <div className="text-center mt-12">
-          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition duration-200 shadow-lg hover:shadow-blue-500/20">
-            Lihat Semua Berita
-          </button>
+          {/* Kolom Kanan: Scrollable Vertical List */}
+          <div>
+            <h3
+              className="font-bold text-lg text-gray-900 mb-4"
+              style={{ fontFamily: "'Georgia', serif" }}
+            >
+              Recent news
+            </h3>
+            <div
+              className="space-y-6 max-h-[500px] overflow-y-auto pr-2"
+              style={{ scrollbarWidth: "thin", scrollbarColor: "#cbd5e1 #fff" }}
+            >
+              {news.length > 4 ? (
+                news.slice(4).map((item, i) => (
+                  <div
+                    key={i}
+                    className={`flex items-start space-x-4 pb-4 ${i < news.length - 5 ? "border-b border-gray-200" : ""
+                      }`}
+                  >
+                    <div className="flex-1">
+                      <h4
+                        className="text-lg font-bold text-gray-900 mb-1 leading-tight"
+                        style={{ fontFamily: "'Georgia', serif", fontWeight: 700 }}
+                      >
+                        {item.title}
+                      </h4>
+                      <p
+                        className="text-gray-700 text-sm mb-2"
+                        style={{ fontFamily: "'Georgia', serif" }}
+                      >
+                        {item.summary}
+                      </p>
+                      <p className="text-xs text-gray-500">{item.readTime} MIN READ</p>
+                    </div>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-24 h-24 object-cover rounded-md flex-shrink-0"
+                    />
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500">Tidak ada berita lain.</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function NewsCard({ item }) {
-  return (
-    <div className="group relative overflow-hidden rounded-xl shadow-lg h-80 hover:shadow-xl transition-shadow duration-300">
-      <img
-        src={item.image}
-        alt={item.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-
-      <div className="relative h-full flex flex-col justify-end p-6">
-        <div className="mb-2">
-          <span className="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full mb-1">
-            {item.category?.name || "Tanpa Kategori"}
-          </span>
-          <span className="block text-sm text-white/80">
-            {new Date(item.created_at).toLocaleDateString("id-ID", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </span>
-        </div>
-        <h3 className="text-white text-lg font-bold leading-tight mb-3">
-          {item.title}
-        </h3>
-        <button className="self-start text-white text-sm font-medium flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          Baca Selengkapnya
-          <svg
-            className="w-4 h-4 ml-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            ></path>
-          </svg>
-        </button>
-      </div>
-    </div>
   );
 }
