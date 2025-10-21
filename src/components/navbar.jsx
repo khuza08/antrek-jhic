@@ -174,12 +174,6 @@ export default function Header() {
                 >
                   Daftar Guru
                 </Link>
-                <Link
-                  to="/guru/staf"
-                  className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
-                >
-                  Staf Pengajar
-                </Link>
               </div>
             </div>
 
@@ -288,9 +282,6 @@ export default function Header() {
                 <div className="ml-4 mt-1 space-y-2 border-l-2 border-blue-300 dark:border-blue-500 pl-3">
                   <Link to="/guru" className="block py-2 hover:text-blue-600 dark:hover:text-blue-300 transition" onClick={closeMobileMenu}>
                     Daftar Guru
-                  </Link>
-                  <Link to="/guru/staf" className="block py-2 hover:text-blue-600 dark:hover:text-blue-300 transition" onClick={closeMobileMenu}>
-                    Staf Pengajar
                   </Link>
                 </div>
               )}
