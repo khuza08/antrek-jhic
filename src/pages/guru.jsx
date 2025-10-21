@@ -5,9 +5,9 @@ export default function Guru() {
   const [majors, setMajors] = useState([]);
   const [selectedMajor, setSelectedMajor] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState("grid");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [tempMajor, setTempMajor] = useState("all"); // for modal
+  const [tempMajor, setTempMajor] = useState("all"); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
