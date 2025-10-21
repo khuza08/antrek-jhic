@@ -14,7 +14,7 @@ export default function Guru() {
   useEffect(() => {
     const fetchGurus = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/teachers");
+        const res = await fetch("https://bealderlake.jh-beon.cloud/api/teachers");
         if (!res.ok) throw new Error("Failed to load data");
         const rawData = await res.json();
 
