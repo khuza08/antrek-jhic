@@ -211,7 +211,7 @@ export default function Guru() {
                     className="mr-2"
                   />
                   <span className="text-gray-700 dark:text-gray-300">
-                    All Majors
+                    Semua Mapel
                   </span>
                 </label>
                 {majors.map((major) => (
