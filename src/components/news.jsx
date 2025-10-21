@@ -6,7 +6,6 @@ export default function News() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-
         const res = await fetch("https://bealderlake.jh-beon.cloud/api/news");
         console.log("Response status:", res.status);
         if (!res.ok) {
@@ -20,6 +19,16 @@ export default function News() {
     };
     fetchNews();
   }, []);
+
+  const getExcerpt = (item) => {
+    if (item.excerpt) return item.excerpt;
+    if (item.content) {
+      return item.content.length > 150
+        ? item.content.substring(0, 150).trimEnd() + "…"
+        : item.content;
+    }
+    return item.summary || "Tidak ada ringkasan.";
+  };
 
   return (
     <section className="w-full py-16 bg-gray-900">
@@ -40,13 +49,13 @@ export default function News() {
           <div className="border-t border-gray-300 my-4"></div>
         </div>
 
-        {/* left 4, right scrollable*/}
+        {/* left 4, right scrollable */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* left 2x2 */}
+          {/* Left 2x2 */}
           <div className="lg:col-span-2">
             <h3
               className="font-bold text-lg text-gray-900 mb-6"
-              style={{ fontFamily: "'Georgia', serif" }}
+              style={{ fontFamily: "'Times New Roman', serif" }}
             >
               Latest News
             </h3>
@@ -63,15 +72,15 @@ export default function News() {
                     </div>
                     <h3
                       className="text-xl font-bold text-gray-900 mb-2 leading-tight"
-                      style={{ fontFamily: "'Georgia', serif", fontWeight: 700 }}
+                      style={{ fontFamily: "'Times New Roman', serif", fontWeight: 700 }}
                     >
                       {item.title}
                     </h3>
                     <p
                       className="text-gray-700 mb-3 text-sm"
-                      style={{ fontFamily: "'Georgia', serif" }}
+                      style={{ fontFamily: "'Times New Roman', serif" }}
                     >
-                      {item.summary}
+                      {getExcerpt(item)}
                     </p>
                     <p className="text-xs text-gray-500">{item.readTime} MIN READ</p>
                   </div>
@@ -82,11 +91,11 @@ export default function News() {
             </div>
           </div>
 
-          {/* Kolom Kanan: Scrollable Vertical List */}
+          {/* Kolom Kanan: Scrollable List */}
           <div>
             <h3
               className="font-bold text-lg text-gray-900 mb-4"
-              style={{ fontFamily: "'Georgia', serif" }}
+              style={{ fontFamily: "'Times New Roman', serif" }}
             >
               Recent news
             </h3>
@@ -98,21 +107,22 @@ export default function News() {
                 news.slice(4).map((item, i) => (
                   <div
                     key={i}
-                    className={`flex items-start space-x-4 pb-4 ${i < news.length - 5 ? "border-b border-gray-200" : ""
-                      }`}
+                    className={`flex items-start space-x-4 pb-4 ${
+                      i < news.length - 5 ? "border-b border-gray-200" : ""
+                    }`}
                   >
                     <div className="flex-1">
                       <h4
                         className="text-lg font-bold text-gray-900 mb-1 leading-tight"
-                        style={{ fontFamily: "'Georgia', serif", fontWeight: 700 }}
+                        style={{ fontFamily: "'Times New Roman', serif", fontWeight: 700 }}
                       >
                         {item.title}
                       </h4>
                       <p
                         className="text-gray-700 text-sm mb-2"
-                        style={{ fontFamily: "'Georgia', serif" }}
+                        style={{ fontFamily: "'Times New Roman', serif" }}
                       >
-                        {item.summary}
+                        {getExcerpt(item)}
                       </p>
                       <p className="text-xs text-gray-500">{item.readTime} MIN READ</p>
                     </div>
