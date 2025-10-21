@@ -6,7 +6,6 @@ export default function News() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        // Perbaiki URL: hapus spasi ekstra
         const res = await fetch("https://bealderlake.jh-beon.cloud/api/news");
         console.log("Response status:", res.status);
         if (!res.ok) {
@@ -32,11 +31,12 @@ export default function News() {
   };
 
   return (
-    <section className="w-full py-16 bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded-2xl">
-        <div className="text-center mb-2">
+    <section className="w-full py-6 bg-white">
+
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
           <h2
-            className="text-6xl font-bold text-gray-900 mb-4 pt-6"
+            className="text-6xl font-bold text-gray-900"
             style={{ fontFamily: "'Times New Roman', serif", fontWeight: 700 }}
           >
             antrek
@@ -47,10 +47,10 @@ export default function News() {
               news
             </span>
           </h2>
-          <div className="border-t border-gray-300 my-4"></div>
+          <div className="border-t border-gray-500 my-4"></div>
         </div>
 
-        {/* left 4, right scrollable */}
+        {/* Layout grid: left 2x2 + right scrollable */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left 2x2 */}
           <div className="lg:col-span-2">
@@ -68,7 +68,7 @@ export default function News() {
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="w-full h-48 object-cover rounded-md"
+                        className="w-full h-56 object-cover rounded-md shadow-sm"
                       />
                     </div>
                     <h3
@@ -85,6 +85,7 @@ export default function News() {
                     </p>
                     <button
                       className="text-blue-500 hover:text-blue-800 text-sm font-medium flex items-center"
+                      style={{ fontFamily: "'Times New Roman', serif" }}
                     >
                       Baca Selengkapnya
                       <svg
@@ -109,7 +110,7 @@ export default function News() {
             </div>
           </div>
 
-          {/* Kolom Kanan: Scrollable List */}
+          {/* Kolom Kanan: Scrollable List — Tinggi Diperpanjang */}
           <div>
             <h3
               className="font-bold text-lg text-gray-900 mb-4"
@@ -118,8 +119,12 @@ export default function News() {
               Recent news
             </h3>
             <div
-              className="space-y-6 max-h-[500px] overflow-y-auto pr-2"
-              style={{ scrollbarWidth: "thin", scrollbarColor: "#cbd5e1 #fff" }}
+              className="space-y-6 max-h-[650px] overflow-y-auto pr-2"
+              style={{
+                scrollbarWidth: "thin",
+                scrollbarColor: "#cbd5e1 #fff",
+                fontFamily: "'Times New Roman', serif",
+              }}
             >
               {news.length > 4 ? (
                 news.slice(4).map((item, i) => (
@@ -144,6 +149,7 @@ export default function News() {
                       </p>
                       <button
                         className="text-blue-500 hover:text-blue-800 text-sm font-medium flex items-center"
+                        style={{ fontFamily: "'Times New Roman', serif" }}
                       >
                         Baca Selengkapnya
                         <svg
@@ -164,7 +170,7 @@ export default function News() {
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-24 h-24 object-cover rounded-md flex-shrink-0"
+                      className="w-28 h-28 object-cover rounded-md flex-shrink-0 shadow-sm"
                     />
                   </div>
                 ))
