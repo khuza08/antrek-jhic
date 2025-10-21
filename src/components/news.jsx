@@ -6,6 +6,7 @@ export default function News() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        // Perbaiki URL: hapus spasi ekstra
         const res = await fetch("https://bealderlake.jh-beon.cloud/api/news");
         console.log("Response status:", res.status);
         if (!res.ok) {
@@ -82,7 +83,24 @@ export default function News() {
                     >
                       {getExcerpt(item)}
                     </p>
-                    <p className="text-xs text-gray-500">{item.readTime} MIN READ</p>
+                    <button
+                      className="text-blue-500 hover:text-blue-800 text-sm font-medium flex items-center"
+                    >
+                      Baca Selengkapnya
+                      <svg
+                        className="w-4 h-4 ml-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 ))
               ) : (
@@ -124,7 +142,24 @@ export default function News() {
                       >
                         {getExcerpt(item)}
                       </p>
-                      <p className="text-xs text-gray-500">{item.readTime} MIN READ</p>
+                      <button
+                        className="text-blue-500 hover:text-blue-800 text-sm font-medium flex items-center"
+                      >
+                        Baca Selengkapnya
+                        <svg
+                          className="w-4 h-4 ml-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
                     </div>
                     <img
                       src={item.image}
