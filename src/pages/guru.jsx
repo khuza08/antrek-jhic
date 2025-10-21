@@ -198,7 +198,7 @@ export default function Guru() {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6">
               <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">
-                Filter by Major
+                Filter berdasarkan Mapel
               </h3>
 
               <div className="space-y-3 mb-6">
